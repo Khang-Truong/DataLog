@@ -1,0 +1,103 @@
+@import "~bootstrap/scss/bootstrap";
+
+@font-face {
+  font-family: "SF Pro";
+  src: url("./fonts/SF-Pro.ttf");
+}
+
+@font-face {
+  font-family: "SF Pro Display Light";
+  font-style: "Light";
+  src: url("./fonts/SF-Pro-Display-Light.otf");
+}
+
+@font-face {
+  font-family: "SF Pro Display Semibold";
+  font-style: "Semibold";
+  src: url("./fonts/SF-Pro-Display-Semibold.otf");
+}
+
+@font-face {
+  font-family: "SF Pro Display Medium";
+  font-style: "Medium";
+  src: url("./fonts/SF-Pro-Display-Medium.otf");
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', 'SF Pro Display Light', 'SF Pro Display Medium', 'SF Pro Display Semibold',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+main,
+html,
+body {
+  overflow-x: hidden;
+}
+
+html {
+  font-size: 100%;
+  scroll-behavior: smooth;
+}
+
+.App {
+  font-family: 'SF Pro';
+
+  h1 {
+    font-family: 'SF Pro Display Semibold';
+  }
+
+  .btnLogin {
+    flex: 1 1 0;
+    padding: 0.25em 1em;
+    border: black solid;
+    width: 100%;
+    color: white;
+    background-color: rgb(0, 0, 0);
+    -webkit-appearance: none;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    font-family: 'SF Pro Display Medium';
+  }
+
+  .btnLogin:hover {
+    flex: 1 1 0;
+    padding: 0.25em 1em;
+    border: black solid;
+    width: 100%;
+    color: #000000;
+    background-color: rgba(255, 255, 255, 0.2);
+    -webkit-appearance: none;
+    transition: 0.5s ease;
+    -webkit-transition: 0.5s ease;
+  }
+
+  .card {
+    background-color: #f7f7f7;
+    padding: 1rem;
+    margin: 1rem;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  #cardBackground {
+    border-radius: 2em;
+    background-color: rgba(143, 143, 143, 0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 2rem;
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
