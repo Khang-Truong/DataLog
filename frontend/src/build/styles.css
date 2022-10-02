@@ -10768,9 +10768,28 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+@font-face {
+  font-family: "SF Pro";
+  src: url(../../1fdec2d18eece9c05028.ttf);
+}
+@font-face {
+  font-family: "SF Pro Display Light";
+  font-style: "Light";
+  src: url(../../d7b8c1bd4c0103c25a6f.otf);
+}
+@font-face {
+  font-family: "SF Pro Display Semibold";
+  font-style: "Semibold";
+  src: url(../../bf7136148b353272cc64.otf);
+}
+@font-face {
+  font-family: "SF Pro Display Medium";
+  font-style: "Medium";
+  src: url(../../3a44055dc74df7294663.otf);
+}
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro", "SF Pro Display Light", "SF Pro Display Medium", "SF Pro Display Semibold", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -10779,7 +10798,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-main {
+main,
+html,
+body {
   overflow-x: hidden;
 }
 
@@ -10788,7 +10809,13 @@ html {
   scroll-behavior: smooth;
 }
 
-.App .btnLogin {
+.App {
+  font-family: "SF Pro";
+}
+.App h1, .App .h1 {
+  font-family: "SF Pro Display Semibold";
+}
+.App .bttn {
   flex: 1 1 0;
   padding: 0.25em 1em;
   border: black solid;
@@ -10798,8 +10825,33 @@ html {
   -webkit-appearance: none;
   margin-top: 1em;
   margin-bottom: 1em;
+  font-family: "SF Pro Display Medium";
 }
-.App .btnLogin:hover {
+.App .bttn:hover {
+  flex: 1 1 0;
+  padding: 0.25em 1em;
+  border: black solid;
+  width: 100%;
+  color: #000000;
+  background-color: rgba(255, 255, 255, 0.2);
+  -webkit-appearance: none;
+  transition: 0.5s ease;
+  -webkit-transition: 0.5s ease;
+}
+.App .bttn2 {
+  flex: 1 1 0;
+  padding: 0.25em 1em;
+  border: black solid;
+  width: 100%;
+  color: white;
+  background-color: rgb(61, 61, 61);
+  border-color: rgb(61, 61, 61);
+  -webkit-appearance: none;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  font-family: "SF Pro Display Medium";
+}
+.App .bttn2:hover {
   flex: 1 1 0;
   padding: 0.25em 1em;
   border: black solid;
@@ -10829,6 +10881,8 @@ html {
   padding: 2rem;
   padding-left: 5rem;
   padding-right: 5rem;
+  max-width: 90%;
+  min-width: 70%;
 }
 
 /*# sourceMappingURL=styles.css.map*/

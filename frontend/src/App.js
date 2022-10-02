@@ -16,7 +16,7 @@ export default function App() {
             <div className="App">
                 <main>
                     <Routes>
-                        <Route path="/" element={<Login />} />
+                        <Route path="/" element={<Home />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/business" element={<Business />} />
                         {/* <Route path="/:businessname" element={<Business />} /> */}

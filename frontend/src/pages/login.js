@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {Link, useNavigate} from "react-router-dom";
-import BinaryBackground from '../components/binarybackground'
+import BinaryBackground from '../components/backgrounds/binarybackground';
 
 export default function Login(props) {
     const navigate = useNavigate();
@@ -28,7 +28,7 @@ export default function Login(props) {
                             {/* When click continue ->  redirects to "/:businessname" */}
                             <div className="col-12 text-start" style={{ marginBottom: '' }}>
                                 <button
-                                    className={`btn btnLogin`}
+                                    className={`btn bttn`}
                                 >
                                     <span>Continue</span>
                                 </button>

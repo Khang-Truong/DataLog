@@ -23,6 +23,11 @@
   src: url("./fonts/SF-Pro-Display-Medium.otf");
 }
 
+$primaryColorLightMode: #ffffff;
+$secondaryColorLightMode: #000000;
+$tertiaryColorLightMode: rgb(61, 61, 61);
+$primaryBackgroundColorLightMode: rgba(255, 255, 255, 0.2);
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', 'SF Pro Display Light', 'SF Pro Display Medium', 'SF Pro Display Semibold',
@@ -52,9 +57,10 @@ html {
 
   h1 {
     font-family: 'SF Pro Display Semibold';
+    margin-bottom: 0;
   }
 
-  .btnLogin {
+  .bttn {
     flex: 1 1 0;
     padding: 0.25em 1em;
     border: black solid;
@@ -67,7 +73,33 @@ html {
     font-family: 'SF Pro Display Medium';
   }
 
-  .btnLogin:hover {
+  .bttn:hover {
+    flex: 1 1 0;
+    padding: 0.25em 1em;
+    border: black solid;
+    width: 100%;
+    color: #000000;
+    background-color: rgba(255, 255, 255, 0.2);
+    -webkit-appearance: none;
+    transition: 0.5s ease;
+    -webkit-transition: 0.5s ease;
+  }
+
+  .bttn2 {
+    flex: 1 1 0;
+    padding: 0.25em 1em;
+    border: black solid;
+    width: 100%;
+    color: white;
+    background-color: rgb(61, 61, 61);
+    border-color: rgb(61, 61, 61);
+    -webkit-appearance: none;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    font-family: 'SF Pro Display Medium';
+  }
+
+  .bttn2:hover {
     flex: 1 1 0;
     padding: 0.25em 1em;
     border: black solid;
@@ -99,5 +131,27 @@ html {
     padding: 2rem;
     padding-left: 5rem;
     padding-right: 5rem;
+    max-width: 90%;
+    min-width: 70%;
+  }
+
+  img {
+    pointer-events: none;
+  }
+
+  .dlNavbar
+  {
+    width: 100vw;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    position: fixed;
+    top: 1;
+    background-color: rgba(143, 143, 143, 0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
   }
 }
+
+@media only screen and (max-width: 600px) {}

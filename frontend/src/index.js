@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import NotSupported from "./pages/not-supported";
+import AppMobile from "./AppMobile";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 if ((navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i))) {
   root.render(
     <React.StrictMode>
-      <NotSupported />
+      <AppMobile />
     </React.StrictMode>
   )
 } else {
