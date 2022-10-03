@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BinaryBackground from '../components/backgrounds/binarybackground'
+import Navbar from '../components/navbar';
 
 export default function Business(props) {
     const navigate = useNavigate();
@@ -20,16 +21,22 @@ export default function Business(props) {
         }
     }, []);
 
+    function continueLogin(e) {
+        e.preventDefault();
+        navigate('/dashboard');
+    }
+
     return (
         <div>
             {(isBusinessReady) ?
                 <>
+                    <Navbar />
                     <div style={{ width: '100vw', height: '100vh' }} className={`d-flex align-items-center`}>
                         <div style={{ width: '100vw' }}>
                             <div className="col-md-12" style={{ padding: '1rem 5rem', display: 'flex', justifyContent: 'center' }}>
                                 <div className={`card card-container`} id={`cardBackground`}>
                                     <h1 className="text-center">{`${businessName}`} Customer Login</h1>
-                                    <form className="row g-3" style={{ marginTop: '0.5rem' }}>
+                                    <form className="row g-3" style={{ marginTop: '0.5rem' }} onSubmit={continueLogin}>
                                         <div className="col-12">
                                             <label htmlFor="username" className="form-label text-start" style={{ width: '100%' }}>Username</label>
                                             <input

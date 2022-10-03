@@ -18,7 +18,7 @@ export default function Home() {
 
     return (
         <div>
-            <Navbar />
+            <Navbar/>
             <div style={{ width: '100vw', height: '100vh' }} className={`d-flex align-items-center`}>
                 <div style={{ width: '100vw', height: '100vh', position: 'absolute', zIndex: '-1' }}>
                     <Particles id="tsparticles" init={particlesInit} loaded={particlesLoaded} options={particlesConfig} />
