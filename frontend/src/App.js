@@ -1,51 +1,69 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import TodoView from './components/TodoListView';
-import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css'; 
-
+import Barchart from './components/Charts/Barchart';
+import Linechart from './components/Charts/Linechart';
+import Piechart from './components/Charts/Piechart';
+import Scatterchart from './components/Charts/Scatterchart';
+// import MatrixChart from './components/Charts/Matrixchart';
+import { UserData } from './TempData/Data';
+import { TemperatureData } from './TempData/RegressionData1';
+import { InflationData } from './TempData/RegressionData2';
+import { AllFactorsData } from './TempData/RegressionData3';
+import { Chart } from 'chart.js';
+import zoomPlugin from 'chartjs-plugin-zoom';
 
 function App() {
+	const [regression, setRegression] = useState({
+		labels: TemperatureData.map((data) => data.date),
+		datasets: [
+			{
+				label: 'Regression based on past sales in CAD',
+				data: [5500, 4100, 4900, 6200, 6900, 6100, 6480],
+				backgroundColor: 'rgba(75,192,192,1)',
+				borderColor: 'rgba(75,192,192,1)',
+			},
+			{
+				label: 'Regression based on temperature in CAD',
+				data: TemperatureData.map((data) => data.data),
+				backgroundColor: '#50AF95',
+				borderColor: '#50AF95',
+			},
+			{
+				label: 'Regression based on inflation in CAD',
+				data: InflationData.map((data) => data.data),
+				backgroundColor: '#f3ba2f',
+				borderColor: '#f3ba2f',
+			},
+			{
+				label: 'Regression based on all factors in CAD',
+				data: AllFactorsData.map((data) => data.data),
+				backgroundColor: '#2a71d0',
+				borderColor: '#2a71d0',
+			},
+		],
+	});
+	Chart.register(zoomPlugin);
 
-  const [todoList, setTodoList] = useState([{}])
-  const [title, setTitle] = useState('') 
-  const [desc, setDesc] = useState('')
-  
-    
-
-  // Read all todos
-  useEffect(() => {
-    axios.get('http://localhost:8000/api/todo')
-      .then(res => {
-        setTodoList(res.data)
-      })
-  });
-
-  // Post a todo
-  const addTodoHandler = () => {
-    axios.post('http://localhost:8000/api/todo/', { 'title': title, 'description': desc })
-      .then(res => console.log(res))
-};
-
-  return (
-    <div className="App list-group-item  justify-content-center align-items-center mx-auto" style={{"width":"400px", "backgroundColor":"white", "marginTop":"15px"}} >
-      <h1 className="card text-white bg-primary mb-1" styleName="max-width: 20rem;">Task Manager</h1>
-      <h6 className="card text-white bg-primary mb-3">FASTAPI - React - MongoDB</h6>
-     <div className="card-body">
-      <h5 className="card text-white bg-dark mb-3">Add Your Task</h5>
-      <span className="card-text"> 
-        <input className="mb-2 form-control titleIn" onChange={event => setTitle(event.target.value)} placeholder='Title'/> 
-        <input className="mb-2 form-control desIn" onChange={event => setDesc(event.target.value)}   placeholder='Description'/>
-      <button className="btn btn-outline-primary mx-2 mb-3" style={{'borderRadius':'50px',"font-weight":"bold"}}  onClick={addTodoHandler}>Add Task</button>
-      </span>
-      <h5 className="card text-white bg-dark mb-3">Your Tasks</h5>
-      <div >
-      <TodoView todoList={todoList} />
-      </div>
-      </div>
-      <h6 className="card text-dark bg-warning py-1 mb-0" >Copyright 2021, All rights reserved &copy;</h6>
-    </div>
-  );
+	return (
+		<div className="App">
+			<div style={{ width: 700 }}>
+				<Linechart chartData={regression} />
+			</div>
+      {/* <div style={{ width: 700 }}>
+				<Barchart chartData={userData1} />
+			</div>
+      <div style={{ width: 400 }}>
+				<Piechart chartData={userData1} />
+			</div>
+			<div style={{ width: 700 }}>
+				<Scatterchart chartData={userData1} />
+			</div> */}
+			{/* <div style={{ width: 700 }}>
+				<MatrixChart chartData={matrix} />
+			</div> */}
+		</div>
+	);
 }
 
 export default App;
