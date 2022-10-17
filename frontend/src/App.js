@@ -5,6 +5,7 @@ import Barchart from './components/Charts/Barchart';
 import Linechart from './components/Charts/Linechart';
 import Piechart from './components/Charts/Piechart';
 import Scatterchart from './components/Charts/Scatterchart';
+import BarchartFilterDate from './components/Charts/BarchartFilterDate';
 // import MatrixChart from './components/Charts/Matrixchart';
 import { UserData } from './TempData/Data';
 import { TemperatureData } from './TempData/RegressionData1';
@@ -45,15 +46,26 @@ function App() {
 	});
 	Chart.register(zoomPlugin);
 
+	// variable for bar chart filtering by range date
+	const initialDate = UserData.map((user) => user.date);
+	const initialDataPoint = UserData.map((data) => data.userGain);
+
 	return (
 		<div className="App">
 			<div style={{ width: 700 }}>
 				<Linechart chartData={regression} />
 			</div>
-      {/* <div style={{ width: 700 }}>
-				<Barchart chartData={userData1} />
+			<div style={{ width: 700 }}>
+				<BarchartFilterDate
+					initialDate={initialDate}
+					initialDataPoint={initialDataPoint}
+					label={'Users Gained'}
+				/>
 			</div>
-      <div style={{ width: 400 }}>
+			{/* <div style={{ width: 700 }}>
+				<Barchart chartData={userData1} />
+			</div> */}
+			{/* <div style={{ width: 400 }}>
 				<Piechart chartData={userData1} />
 			</div>
 			<div style={{ width: 700 }}>
