@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import Barchart from './components/Charts/Barchart';
+import BarchartFilterDate from './components/Charts/BarchartFilterDate';
 import Linechart from './components/Charts/Linechart';
 import Piechart from './components/Charts/Piechart';
 import Scatterchart from './components/Charts/Scatterchart';
-import BarchartFilterDate from './components/Charts/BarchartFilterDate';
-// import MatrixChart from './components/Charts/Matrixchart';
-import { UserData } from './TempData/Data';
+import Heatmap from './components/Charts/Heatmap';
+import { UserData } from './TempData/UserData';
 import { TemperatureData } from './TempData/RegressionData1';
 import { InflationData } from './TempData/RegressionData2';
 import { AllFactorsData } from './TempData/RegressionData3';
+import { xLabels, yLabels } from './TempData/HeatmapData';
 import { Chart } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
 
@@ -62,6 +63,10 @@ function App() {
 					label={'Users Gained'}
 				/>
 			</div>
+			<h1>Market basket analysis</h1>
+			<div style={{ width: 1100 }}>
+				<Heatmap xlabelsProp={xLabels} ylabelsProp={yLabels} />
+			</div>
 			{/* <div style={{ width: 700 }}>
 				<Barchart chartData={userData1} />
 			</div> */}
@@ -70,9 +75,6 @@ function App() {
 			</div>
 			<div style={{ width: 700 }}>
 				<Scatterchart chartData={userData1} />
-			</div> */}
-			{/* <div style={{ width: 700 }}>
-				<MatrixChart chartData={matrix} />
 			</div> */}
 		</div>
 	);
