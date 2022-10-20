@@ -18,19 +18,19 @@ export default function Home() {
 
     return (
         <div>
-            <Navbar/>
+            <Navbar loading='lazy'/>
             <div style={{ width: '100vw', height: '100vh' }} className={`d-flex align-items-center`}>
                 <div style={{ width: '100vw', height: '100vh', position: 'absolute', zIndex: '-1' }}>
-                    <Particles id="tsparticles" init={particlesInit} loaded={particlesLoaded} options={particlesConfig} />
+                    <Particles id="tsparticles" init={particlesInit} loaded={particlesLoaded} options={particlesConfig} loading='lazy'/>
                 </div>
                 <div style={{}} className={`rounded mx-auto d-block`}>
-                    <img src="./logo192.png" />
+                    <img src="./logo192.png" loading="lazy"/>
                 </div>
             </div>
-            <div style={{ width: '100vw', height: '100vh', backgroundColor: 'white' }} className={`d-flex align-items-center`}>
+            {/* <div style={{ width: '100vw', height: '100vh', backgroundColor: 'white' }} className={`d-flex align-items-center`}>
                 <div>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 }

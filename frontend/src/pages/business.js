@@ -30,7 +30,7 @@ export default function Business(props) {
         <div>
             {(isBusinessReady) ?
                 <>
-                    <Navbar />
+                    <Navbar loading='lazy' />
                     <div style={{ width: '100vw', height: '100vh' }} className={`d-flex align-items-center`}>
                         <div style={{ width: '100vw' }}>
                             <div className="col-md-12" style={{ padding: '1rem 5rem', display: 'flex', justifyContent: 'center' }}>

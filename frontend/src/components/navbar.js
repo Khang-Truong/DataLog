@@ -6,13 +6,16 @@ function Navbar() {
 
     useEffect(() => {
 
-        if ((window.location.pathname == '/' || window.location.pathname == '/home') && !(navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i))) {
+        if ((window.location.pathname == '/' || window.location.pathname == '/home') 
+        && !(navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i))) {
             setShowLoginBtn(true)
         } else {
             setShowLoginBtn(false);
         }
 
-        if (window.location.pathname.includes('/analysis') || window.location.pathname.includes('/profile') || window.location.pathname.includes('/dashboard') || window.location.pathname.includes('/train-model') || window.location.pathname.includes('/prediction')) {
+        if (window.location.pathname.includes('/analysis') || window.location.pathname.includes('/profile') 
+        || window.location.pathname.includes('/dashboard') || window.location.pathname.includes('/train-model') 
+        || window.location.pathname.includes('/prediction')) {
             setShowNavbar(false)
         }
 
@@ -73,7 +76,6 @@ function Navbar() {
             )}
         </div>
     )
-
 }
 
 export default Navbar;
