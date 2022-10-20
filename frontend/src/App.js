@@ -1,51 +1,41 @@
-import React, { useState, useEffect} from 'react';
-import './App.css';
-import TodoView from './components/TodoListView';
-import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css'; 
+import React from "react";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route
+} from "react-router-dom";
+import "./scss/App.scss";
+import Login from "./pages/login";
+import Business from "./pages/business";
+import Home from "./pages/home";
+import NotSupported from "./pages/not-supported";
+import Dashboard from './pages/dashboard';
+import Analysis from './pages/analysis';
+import Prediction from './pages/prediction';
+import TrainModel from './pages/train-model';
 
+//import Navbar from './components/navbar';
 
-function App() {
-
-  const [todoList, setTodoList] = useState([{}])
-  const [title, setTitle] = useState('') 
-  const [desc, setDesc] = useState('')
-  
-    
-
-  // Read all todos
-  useEffect(() => {
-    axios.get('http://localhost:8000/api/todo')
-      .then(res => {
-        setTodoList(res.data)
-      })
-  });
-
-  // Post a todo
-  const addTodoHandler = () => {
-    axios.post('http://localhost:8000/api/todo/', { 'title': title, 'description': desc })
-      .then(res => console.log(res))
-};
-
-  return (
-    <div className="App list-group-item  justify-content-center align-items-center mx-auto" style={{"width":"400px", "backgroundColor":"white", "marginTop":"15px"}} >
-      <h1 className="card text-white bg-primary mb-1" styleName="max-width: 20rem;">Task Manager</h1>
-      <h6 className="card text-white bg-primary mb-3">FASTAPI - React - MongoDB</h6>
-     <div className="card-body">
-      <h5 className="card text-white bg-dark mb-3">Add Your Task</h5>
-      <span className="card-text"> 
-        <input className="mb-2 form-control titleIn" onChange={event => setTitle(event.target.value)} placeholder='Title'/> 
-        <input className="mb-2 form-control desIn" onChange={event => setDesc(event.target.value)}   placeholder='Description'/>
-      <button className="btn btn-outline-primary mx-2 mb-3" style={{'borderRadius':'50px',"font-weight":"bold"}}  onClick={addTodoHandler}>Add Task</button>
-      </span>
-      <h5 className="card text-white bg-dark mb-3">Your Tasks</h5>
-      <div >
-      <TodoView todoList={todoList} />
-      </div>
-      </div>
-      <h6 className="card text-dark bg-warning py-1 mb-0" >Copyright 2021, All rights reserved &copy;</h6>
-    </div>
-  );
+export default function App() {
+    return (
+        <Router>
+            <div className="App">
+                {/* <Navbar/> */}
+                <main>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/login" element={<Login />} />
+                        {/* <Route path="/:businessname" element={<Business />} /> */}
+                        <Route path="/business" element={<Business />} />
+                        {/* <Route path="/:businessname/dashboard" element={<Dashboard />} /> */}
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/analysis" element={<Analysis />} />
+                        <Route path="/prediction" element={<Prediction />} />
+                        <Route path="/train-model" element={<TrainModel />} />
+                        <Route path="/not-supported" element={<NotSupported />} />
+                    </Routes>
+                </main>
+            </div>
+        </Router>
+    );
 }
-
-export default App;
