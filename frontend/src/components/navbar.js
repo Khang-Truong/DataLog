@@ -15,7 +15,7 @@ function Navbar() {
 
         if (window.location.pathname.includes('/analysis') || window.location.pathname.includes('/profile') 
         || window.location.pathname.includes('/dashboard') || window.location.pathname.includes('/train-model') 
-        || window.location.pathname.includes('/prediction')) {
+        || window.location.pathname.includes('/prediction') || window.location.pathname.includes('/feedback')) {
             setShowNavbar(false)
         }
 
@@ -69,6 +69,12 @@ function Navbar() {
                             <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
                                 {window.location.pathname.includes('/train-model') ? (<h2 style={{ margin: '0' }}>􀧓</h2>) : (<h2 style={{ margin: '0' }}>􀫥</h2>)}
                                 <h6 style={{ marginLeft: '1rem' }}>Train Model</h6>
+                            </div>
+                        </a>
+                        <a href='/feedback' style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem' }}>
+                            <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
+                                {window.location.pathname.includes('/feedback') ? (<h2 style={{ margin: '0' }}>􀧓</h2>) : (<h2 style={{ margin: '0' }}>􀫥</h2>)}
+                                <h6 style={{ marginLeft: '1rem' }}>Customer Feedback</h6>
                             </div>
                         </a>
                     </div>
