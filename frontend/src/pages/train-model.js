@@ -28,15 +28,26 @@ export default function TrainModel() {
 		<div>
 			<Navbar />
 			<div
-				style={{ width: 1000, paddingLeft: '103px' }}
+				style={{ paddingRight: '2rem', paddingLeft: '6.5rem' }}
 				className={`align-items-center dashboardTemplate`}
 			>
-				<input
-					type="file"
-					accept="application/pdf"
-					id="customFile"
-					onChange={(e) => guardarArchivo(e)}
-				/>
+				<div style={{ width: '50%' }} className={`align-items-center`}>
+					<div style={{width:'15rem'}}>
+						<button className={`btn bttn`}>
+							<label htmlFor="customFile" style={{ width: '100%', cursor: 'pointer' }}>
+								Upload CSV
+							</label>
+						</button>
+						<input
+							type="file"
+							accept="application/pdf"
+							id="customFile"
+							style={{ visibility: "hidden" }}
+							onChange={(e) => guardarArchivo(e)}
+						/>
+					</div>
+
+				</div>
 			</div>
 		</div>
 	);

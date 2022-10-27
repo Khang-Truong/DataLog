@@ -73,7 +73,7 @@ function Navbar() {
                         </a>
                         <a href='/feedback' style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem' }}>
                             <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
-                                {window.location.pathname.includes('/feedback') ? (<h2 style={{ margin: '0' }}>􀧓</h2>) : (<h2 style={{ margin: '0' }}>􀫥</h2>)}
+                                {window.location.pathname.includes('/feedback') ? (<h2 style={{ margin: '0' }}>􀿌</h2>) : (<h2 style={{ margin: '0' }}>􀿋</h2>)}
                                 <h6 style={{ marginLeft: '1rem' }}>Customer Feedback</h6>
                             </div>
                         </a>
