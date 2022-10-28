@@ -5,6 +5,7 @@ import {
     Route
 } from "react-router-dom";
 import "./scss/App.scss";
+import 'bootstrap/dist/css/bootstrap.min.css'
 import Login from "./pages/login";
 import Business from "./pages/business";
 import Home from "./pages/home";
