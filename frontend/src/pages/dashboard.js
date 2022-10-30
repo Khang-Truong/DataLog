@@ -42,7 +42,7 @@ export default function Dashboard() {
 						</div>
 					</div>
 
-					<div style={{ width: 500 }}>
+					<div style={{ width: '100%', padding:'1.5rem' }}>
 						<BarchartFilterDate
 							initialDate={initialDate}
 							initialDataPoint={initialDataPoint}
