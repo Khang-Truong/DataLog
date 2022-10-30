@@ -7,7 +7,7 @@ export default function TrainModel() {
 		reader.readAsDataURL(e.target.files[0]); //start conversion...
 		reader.onload = function (e) {
 			//.. once finished..
-			var rawLog = reader.result.split(',')[1]; //extract only thee file data part
+			var rawLog = reader.result.split(',')[1]; //extract only the file data part
 			var dataSend = {
 				dataReq: { data: rawLog, name: file.name, type: file.type },
 				fname: 'uploadFilesToGoogleDrive',

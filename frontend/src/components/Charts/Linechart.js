@@ -47,9 +47,10 @@ const Linechart = ({ chartData }) => {
 		},
 	};
 
-	const chartRef = useRef(null);
+	const chartRef = useRef();
 	const handleReset = () => {
 		console.log('clicked');
+		console.log(chartRef);
 		chartRef.current.resetZoom();
 	};
 
