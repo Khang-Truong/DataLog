@@ -1,4 +1,4 @@
-import React, { useState , useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Chart as chartjs } from 'chart.js/auto';
 
@@ -11,10 +11,10 @@ const BarchartFilterDate = ({ initialDate, initialDataPoint, label }) => {
 		});
 	};
 
-    const inputRef1 = useRef();
+	const inputRef1 = useRef();
 	const inputRef2 = useRef();
 
-    const [chartData, setChartData] = useState({
+	const [chartData, setChartData] = useState({
 		labels: initialDate,
 		datasets: [
 			{
@@ -27,7 +27,7 @@ const BarchartFilterDate = ({ initialDate, initialDataPoint, label }) => {
 		],
 	});
 
-    const filterData = () => {
+	const filterData = () => {
 		const dates2 = [...initialDate];
 		const dataPoints2 = [...initialDataPoint];
 
@@ -60,7 +60,7 @@ const BarchartFilterDate = ({ initialDate, initialDataPoint, label }) => {
 		});
 	};
 
-    const resetData = () => {
+	const resetData = () => {
 		setChartData({
 			labels: initialDate,
 			datasets: [
@@ -79,6 +79,8 @@ const BarchartFilterDate = ({ initialDate, initialDataPoint, label }) => {
 		<>
 			<Bar
 				data={chartData}
+				onMouseEnter={changeCursor}
+				style={{ cursor: cursor }}
 			/>
 			<input type="date" ref={inputRef1} />
 			<input type="date" ref={inputRef2} />
