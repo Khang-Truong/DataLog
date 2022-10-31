@@ -6,7 +6,7 @@ class Todo(BaseModel):
     description: str
 
 
-class DailyRevenue(BaseModel):
+class DailyRevenueForecast(BaseModel):
     Date: str
     PredictedRevenue: int
     Flag_latest: str
@@ -22,3 +22,7 @@ class Wastage(BaseModel):
 class Sentiments(BaseModel):
     Classification: str
     Date: str
+
+class Revenue(BaseModel):
+    ymd: str
+    dailyRevenue: int

@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 
 from model import Todo
-from model import DailyRevenue
+from model import DailyRevenueForecast
 from model import Wastage
 from model import Sentiments
 
@@ -16,8 +16,8 @@ from database import (
 #------------------------------------#
 
 # for revenues
-from revenuedb import(
-    fetch_latest_revenues
+from forecast_revenuedb import(
+    fetch_latest_forecast_revenues
 )
 
 #------------------------------------#
@@ -36,6 +36,10 @@ from sentimentsdb import(
 
 )
 
+from revenue import(
+    fetch_all_revenue,
+    fecth_by_range_revenue
+)
 
 # an HTTP-specific exception class  to generate exception information
 
@@ -60,9 +64,9 @@ app.add_middleware(
 ## APIs
 
 #getting revenues
-@app.get("/api/revenue")
-async def get_revenue():
-    response = await fetch_latest_revenues()
+@app.get("/api/revenue_forecast")
+async def get_revenue_forecast():
+    response = await fetch_latest_forecast_revenues()
     return response
 
 #-------------------------------------------#
@@ -86,7 +90,6 @@ async def get_by_range_wastage(start_date: str ,end_date:str):
 #getting sentiments by count
 # getting sentiments
 
-
 @app.get("/api/sentiments")
 async def get_sentiment():
     response = await fetch_all_sentiments()
@@ -94,13 +97,26 @@ async def get_sentiment():
 
 
 @app.get("/api/sentiments/")
-async def get_sentiment(start_date: str, end_date:str):
+async def get_sentiment_by_range(start_date: str, end_date:str):
     response = await fecth_by_range_sentiments(start_date,end_date)
     if response:
         return response
     raise HTTPException(404, f"There is no sentiments from {start_date} and {end_date}")
 
 
+# revenue
+@app.get("/api/revenues")
+async def get_revenues():
+    response = await  fetch_all_revenue()
+    return response
+
+
+@app.get("/api/revenues/")
+async def get_revenue_by_range(start_date: str, end_date:str):
+    response = await fecth_by_range_revenue(start_date,end_date)
+    if response:
+        return response
+    raise HTTPException(404, f"There is no revenues from {start_date} and {end_date}")
 
 
 
