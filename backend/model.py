@@ -19,3 +19,6 @@ class Wastage(BaseModel):
     Quantity: int
     Date: str
 
+class Sentiments(BaseModel):
+    Classification: str
+    Date: str

@@ -3,6 +3,7 @@ from fastapi import FastAPI, HTTPException
 from model import Todo
 from model import DailyRevenue
 from model import Wastage
+from model import Sentiments
 
 from database import (
     fetch_one_todo,
@@ -27,6 +28,14 @@ from wastagedb import(
     fetch_date_range_wastage
 )
 
+# for sentiments
+
+from sentimentsdb import(
+    fetch_all_sentiments,
+    fecth_by_range_sentiments
+
+)
+
 
 # an HTTP-specific exception class  to generate exception information
 
@@ -48,15 +57,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+## APIs
+
 #getting revenues
 @app.get("/api/revenue")
 async def get_revenue():
     response = await fetch_latest_revenues()
     return response
 
-
 #-------------------------------------------#
-
 #getting wastages
 
 # all wastage
@@ -74,9 +83,29 @@ async def get_by_range_wastage(start_date: str ,end_date:str):
     raise HTTPException(404, f"There is no wastage from {start_date} and {end_date}")
 
 
+#getting sentiments by count
+# getting sentiments
+
+
+@app.get("/api/sentiments")
+async def get_sentiment():
+    response = await fetch_all_sentiments()
+    return response
+
+
+@app.get("/api/sentiments/")
+async def get_sentiment(start_date: str, end_date:str):
+    response = await fecth_by_range_sentiments(start_date,end_date)
+    if response:
+        return response
+    raise HTTPException(404, f"There is no sentiments from {start_date} and {end_date}")
+
+
+
+
+
 
 #------this is for todos ---- #
-
 @app.get("/")
 async def read_root():
     return {"Hello": "World"}
