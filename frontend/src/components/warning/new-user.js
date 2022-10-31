@@ -2,9 +2,10 @@ import { useState, useEffect } from "react"
 import MatrixRainingLetters from "../backgrounds/binarybackground"
 import authService from "../../services/auth.service"
 import Business from "../../pages/business"
-
+import { v4 } from 'uuid'
 
 export default function NewUser() {
+    var CryptoJS = require("crypto-js");
 
     let [name, setName] = useState('')
     let [username, setUsername] = useState('')
@@ -50,8 +51,18 @@ export default function NewUser() {
                     document.getElementById('alertUsername1').style.display = `none`
                     document.getElementById('alertPassword').style.display = `none`
 
+                    let key = v4()
+                    localStorage.setItem('key', JSON.stringify(key));
+
+                    const encrypted = CryptoJS.AES.encrypt(password, key);
+                    console.log(encrypted.toString());
+
+                    key = JSON.parse(localStorage.getItem('key'))
+                    const decrypted = CryptoJS.AES.decrypt(encrypted, key).toString(CryptoJS.enc.Utf8);
+                    console.log(decrypted);
+
                     user.username = username
-                    user.password = password
+                    user.password = encrypted.toString()
                     user.newuser = false
                     localStorage.setItem('user', JSON.stringify(user));
                     localStorage.setItem('business', JSON.stringify(Object.assign({}, businesses, { users: user }))
