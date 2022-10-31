@@ -5,13 +5,14 @@ import Business from "../../pages/business"
 
 
 export default function NewUser() {
+
     let [name, setName] = useState('')
     let [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     let [businesses, setBusinesses] = useState('')
     const [currentUsername, setCurrentUsername] = useState('')
     const [currentPassword, setCurrentPassword] = useState('')
-    let [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
 
     let currentbusiness = JSON.parse(localStorage.getItem('business'))
 
@@ -49,14 +50,15 @@ export default function NewUser() {
                     document.getElementById('alertUsername1').style.display = `none`
                     document.getElementById('alertPassword').style.display = `none`
 
-                    console.log('successful')
-
                     user.username = username
                     user.password = password
                     user.newuser = false
                     localStorage.setItem('user', JSON.stringify(user));
                     localStorage.setItem('business', JSON.stringify(Object.assign({}, businesses, { users: user }))
                     )
+
+                    console.log(JSON.parse(localStorage.getItem('user')))
+                    console.log(JSON.parse(localStorage.getItem('business')))
 
                     window.location.reload()
                 } else {
