@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     BrowserRouter as Router,
     Routes,
@@ -14,29 +14,45 @@ import Dashboard from './pages/dashboard';
 import Analysis from './pages/analysis';
 import Prediction from './pages/prediction';
 import TrainModel from './pages/train-model';
+import WindowWarning from "./components/warning/warning";
 // import CustomerFeedback from './pages/customerFeedback';
 
 //import Navbar from './components/navbar';
-
 export default function App() {
+    const [showWarning, setShowWarning] = useState(false)
+
+    useEffect(() => {
+        window.addEventListener('resize', function () {
+            if (window.innerWidth < 800) {
+                setShowWarning(true)
+            } else {
+                setShowWarning(false)
+            }
+        })
+    }, [])
+
     return (
         <Router>
             <div className="App">
                 {/* <Navbar/> */}
                 <main>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/login" element={<Login />} />
-                        {/* <Route path="/:businessname" element={<Business />} /> */}
-                        <Route path="/business" element={<Business />} />
-                        {/* <Route path="/:businessname/dashboard" element={<Dashboard />} /> */}
-                        <Route path="/dashboard" element={<Dashboard />} />
-                        <Route path="/analysis" element={<Analysis />} />
-                        <Route path="/prediction" element={<Prediction />} />
-                        <Route path="/train-model" element={<TrainModel />} />
-                        {/* <Route path="/feedback" element={<CustomerFeedback />} /> */}
-                        <Route path="/not-supported" element={<NotSupported />} />
-                    </Routes>
+                    {showWarning ? (<WindowWarning />)
+                        : (
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/:businessname" element={<Business />} />
+                            {/* <Route path="/business" element={<Business />} /> */}
+                            <Route path="/:businessname/dashboard" element={<Dashboard />} />
+                            {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+                            <Route path="/:businessname/analysis" element={<Analysis />} />
+                            <Route path="/:businessname/prediction" element={<Prediction />} />
+                            <Route path="/:businessname/train-model" element={<TrainModel />} />
+                            {/* <Route path="/feedback" element={<CustomerFeedback />} /> */}
+                            <Route path="/not-supported" element={<NotSupported />} />
+                            <Route path="*" element={<Home />} />
+                        </Routes>
+                        )}
                 </main>
             </div>
         </Router>

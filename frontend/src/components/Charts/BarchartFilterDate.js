@@ -6,7 +6,7 @@ const BarchartFilterDate = ({ initialDate, initialDataPoint, label }) => {
 	const [cursor, setCursor] = useState('default');
 	const changeCursor = () => {
 		setCursor((prevState) => {
-			console.log('mouse is pointer');
+			//console.log('mouse is pointer');
 			return 'pointer';
 		});
 	};

@@ -1,3 +1,5 @@
+import { v4 } from 'uuid'
+
 export const UserData = [
 	{
 		id: 1,
@@ -60,3 +62,34 @@ export const UserData = [
 		userLost: 234,
 	},
 ];
+
+export const businesses = [
+	{
+		id: v4(),
+		name: 'Business Test 1',
+		users: [{
+			id: v4(),
+			firstname: 'John',
+			lastname: 'Doe',
+			username: 'asdfasdf',
+			password: 'asdfasdf',
+			email: 'john@email.com',
+			business: 'Business Test 1',
+			newuser: true
+		}]
+	}, 
+	{
+		id: v4(),
+		name: 'Business Test 2',
+		users: [{
+			id: v4(),
+			firstname: 'Jane',
+			lastname: 'Doe',
+			username: 'asdfasdf',
+			password: 'asdfasdf',
+			email: 'Jane@email.com',
+			business: 'Business Test 2',
+			newuser: true
+		}]
+	}
+]

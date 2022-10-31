@@ -1,22 +1,63 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom'
+import AuthService from "../services/auth.service";
+import eventBus from "../common/eventbus";
 
 function Navbar() {
     const [showLoginBtn, setShowLoginBtn] = useState(false);
     const [showNavbar, setShowNavbar] = useState(true);
+    const [initials, setInitials] = useState('')
+    const [user, setUser] = useState('')
+    const [url, setUrl] = useState('')
+    const navigate = useNavigate()
+
+    const logOut = () => {
+        localStorage.removeItem('isLoggedIn')
+        localStorage.removeItem('user')
+        localStorage.removeItem('business')
+
+        AuthService.logout();
+        navigate('/')
+        window.location.reload()
+    }
 
     useEffect(() => {
 
-        if ((window.location.pathname == '/' || window.location.pathname == '/home') 
-        && !(navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i))) {
+        if ((window.location.pathname == '/' || window.location.pathname == '/home')
+            && !(navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i))) {
             setShowLoginBtn(true)
         } else {
             setShowLoginBtn(false);
         }
 
-        if (window.location.pathname.includes('/analysis') || window.location.pathname.includes('/profile') 
-        || window.location.pathname.includes('/dashboard') || window.location.pathname.includes('/train-model') 
-        || window.location.pathname.includes('/prediction') || window.location.pathname.includes('/feedback')) {
+        if (window.location.pathname.includes('/analysis') || window.location.pathname.includes('/profile')
+            || window.location.pathname.includes('/dashboard') || window.location.pathname.includes('/train-model')
+            || window.location.pathname.includes('/prediction') || window.location.pathname.includes('/feedback')) {
             setShowNavbar(false)
+            
+            if ('user' in localStorage && ('business' in localStorage)) {
+                const currentuser = JSON.parse(localStorage.getItem('user'))
+                setUser(currentuser)
+                console.log(currentuser.id)
+
+                const firstinitial = Array.from(currentuser.firstname)[0];
+                const lastinitial = Array.from(currentuser.lastname)[0];
+                setInitials(firstinitial + lastinitial)
+
+                const currentbusiness = JSON.parse(localStorage.getItem('business'))
+                const namecheck = currentbusiness.name.toLowerCase()
+                setUrl(namecheck.split(' ').join('-'))
+            } else {
+                navigate('/')
+            }
+        }
+
+        eventBus.on('logout', () => {
+            logOut()
+        })
+
+        return () => {
+            eventBus.remove('logout')
         }
 
     }, []);
@@ -33,7 +74,7 @@ function Navbar() {
                     {showLoginBtn ? (
                         <a href='/login' style={{ maxWidth: 'auto', minWidth: '9rem' }}>
                             <button className={`btn bttn`}>
-                                <span>Login</span>
+                                <span>Log In</span>
                             </button>
                         </a>
                     ) : <></>}
@@ -43,38 +84,46 @@ function Navbar() {
                     <div className={`d-flex justify-content-between text-start`} style={{ flexDirection: 'column' }}>
                         <a href='/profile' style={{ textDecoration: 'none', color: 'black' }}>
                             <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
-                                <p data-letters='JD'></p>
-                                <h6 style={{ marginLeft: '1rem' }}>John Doe</h6>
+                                <p data-letters={initials}></p>
+                                <h6 style={{ marginLeft: '1.2rem' }}>{`${user.firstname} ${user.lastname}`}</h6>
                             </div>
                         </a>
-                        <a href='/dashboard' style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem' }}>
+                        <a href={`/${url}/dashboard`} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem' }}>
                             <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
                                 {window.location.pathname.includes('/dashboard') ? (<h2>􀦳</h2>) : (<h2 style={{ margin: '0' }}>􀦲</h2>)}
-                                <h6 style={{ marginLeft: '1rem' }}>Dashboard</h6>
+                                <h6 style={{ marginLeft: '1.2rem' }}>Dashboard</h6>
                             </div>
                         </a>
-                        <a href='/prediction' style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem' }}>
+                        <a href={`/${url}/prediction`} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem' }}>
                             <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
                                 {window.location.pathname.includes('/prediction') ? (<h2 style={{ margin: '0' }}>􀜍</h2>) : (<h2 style={{ margin: '0' }}>􀜎</h2>)}
-                                <h6 style={{ marginLeft: '1rem' }}>Prediction</h6>
+                                <h6 style={{ marginLeft: '1.2rem' }}>Prediction</h6>
                             </div>
                         </a>
-                        <a href='/analysis' style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem' }}>
+                        <a href={`/${url}/analysis`} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem' }}>
                             <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
                                 {window.location.pathname.includes('/analysis') ? (<h2 style={{ margin: '0' }}>􀦌</h2>) : (<h2 style={{ margin: '0' }}>􀥜</h2>)}
-                                <h6 style={{ marginLeft: '1rem' }}>&nbsp;&nbsp;Analysis</h6>
+                                <h6 style={{ marginLeft: '1.2rem' }}>&nbsp;&nbsp;Analysis</h6>
                             </div>
                         </a>
-                        <a href='/train-model' style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem' }}>
+                        <a href={`/${url}/train-model`} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem' }}>
                             <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
                                 {window.location.pathname.includes('/train-model') ? (<h2 style={{ margin: '0' }}>􀧓</h2>) : (<h2 style={{ margin: '0' }}>􀫥</h2>)}
-                                <h6 style={{ marginLeft: '1rem' }}>Train Model</h6>
+                                <h6 style={{ marginLeft: '1.2rem' }}>Train Model</h6>
                             </div>
                         </a>
-                        <a href='/feedback' style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem' }}>
+                        <a href={`/profile`} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem' }}>
                             <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
                                 {window.location.pathname.includes('/feedback') ? (<h2 style={{ margin: '0' }}>􀿌</h2>) : (<h2 style={{ margin: '0' }}>􀿋</h2>)}
-                                <h6 style={{ marginLeft: '1rem' }}>Customer Feedback</h6>
+                                <h6 style={{ marginLeft: '1.2rem' }}>Customer Feedback</h6>
+                            </div>
+                        </a>
+                    </div>
+                    <div style={{ position: 'absolute', bottom: 0, marginTop: '1.5rem' }}>
+                        <a href='/' onClick={logOut} style={{ textDecoration: 'none', color: 'black' }}>
+                            <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
+                                <h2 style={{ margin: '0' }}>􀆧</h2>
+                                <h6 style={{ marginLeft: '1.2rem' }}>Log Out</h6>
                             </div>
                         </a>
                     </div>

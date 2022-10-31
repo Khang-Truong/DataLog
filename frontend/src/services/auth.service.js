@@ -15,7 +15,7 @@ class AuthService {
         return axios.get('/api/business-names')
     }
 
-    async login(username, password,business) {
+    async login(username, password, business) {
         const response = await axios
             .post(API_URL + "signin", {
                 username,
@@ -32,11 +32,21 @@ class AuthService {
         localStorage.removeItem("user");
     }
 
-    register(username, email, password) {
-        return axios.post(API_URL + "signup", {
+    updateNewUser(username, password) {
+        return axios.post(API_URL + "update-new-user", {
             username,
             email,
             password
+        });
+    }
+
+    update(username, password, email, firstname, lastname){
+        return axios.post(API_URL + "update", {
+            username,
+            password,
+            email,
+            firstname,
+            lastname
         });
     }
 
