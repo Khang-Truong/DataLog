@@ -12,12 +12,14 @@ def get_weather():
      
     response = requests.get(url).json()["list"]
     
-    #getting only one weather update per day
+    #getting only one weather info per day
 
     response_list = []
 
-    for x in range(4,40,8):
-        response_list.append(response[x])
+    for x in range(3,40,8):
+        response_raw = response[x]["main"]
+        response_raw["dt_txt"] = response[x]["dt_txt"]
+        response_list.append(WeatherForecast(**response_raw))
 
     return response_list
 
