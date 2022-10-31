@@ -142,7 +142,7 @@ async def get_quantity_forecast():
 
 
 @app.get("/api/forecasted_weather")
-async def get_weather_forecast():
+def get_weather_forecast():
     response = get_weather()
     return response
 
