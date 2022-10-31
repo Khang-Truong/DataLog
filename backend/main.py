@@ -1,9 +1,11 @@
 from fastapi import FastAPI, HTTPException
 
+
 from model import Todo
 from model import DailyRevenueForecast
 from model import Wastage
 from model import Sentiments
+from model import ProductQuantityForecast
 
 from database import (
     fetch_one_todo,
@@ -36,10 +38,18 @@ from sentimentsdb import(
 
 )
 
-from revenue import(
+from revenuedb import(
     fetch_all_revenue,
     fecth_by_range_revenue
 )
+
+from forecast_productquantitydb import(
+    fetch_latest_forecast_quantity
+)
+from weather import(
+    get_weather
+)
+
 
 # an HTTP-specific exception class  to generate exception information
 
@@ -86,7 +96,7 @@ async def get_by_range_wastage(start_date: str ,end_date:str):
         return response
     raise HTTPException(404, f"There is no wastage from {start_date} and {end_date}")
 
-
+#-------------------------------------------#
 #getting sentiments by count
 # getting sentiments
 
@@ -103,7 +113,7 @@ async def get_sentiment_by_range(start_date: str, end_date:str):
         return response
     raise HTTPException(404, f"There is no sentiments from {start_date} and {end_date}")
 
-
+#-------------------------------------------#
 # revenue
 @app.get("/api/revenues")
 async def get_revenues():
@@ -118,6 +128,23 @@ async def get_revenue_by_range(start_date: str, end_date:str):
         return response
     raise HTTPException(404, f"There is no revenues from {start_date} and {end_date}")
 
+#-------------------------------------------#
+# product quantity
+
+@app.get("/api/quantity_forecast")
+async def get_quantity_forecast():
+    response = await  fetch_latest_forecast_quantity()
+    return response
+
+
+#-------------------------------------------#
+# weather api
+
+
+@app.get("/api/forecasted_weather")
+async def get_weather_forecast():
+    response = get_weather()
+    return response
 
 
 

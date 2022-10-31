@@ -1,4 +1,5 @@
 # Pydantic allows auto creation of JSON Schemas from models
+from sqlite3 import Date
 from pydantic import BaseModel
 
 class Todo(BaseModel):
@@ -26,3 +27,12 @@ class Sentiments(BaseModel):
 class Revenue(BaseModel):
     ymd: str
     dailyRevenue: int
+
+class ProductQuantityForecast(BaseModel):
+    Date: str
+    Product_Name: str
+    PredictedQuantity: int
+    Temperature: int
+    Day: int
+    Month: int
+    Year: int
