@@ -13,15 +13,13 @@ import Dashboard from './pages/dashboard';
 import Analysis from './pages/analysis';
 import Prediction from './pages/prediction';
 import TrainModel from './pages/train-model';
-// import CustomerFeedback from './pages/customerFeedback';
-
-//import Navbar from './components/navbar';
+import SentimentAnalysis from './pages/SentimentAnalysis';
+import Rating from "./pages/Rating";
 
 export default function App() {
     return (
         <Router>
             <div className="App">
-                {/* <Navbar/> */}
                 <main>
                     <Routes>
                         <Route path="/" element={<Home />} />
@@ -33,7 +31,8 @@ export default function App() {
                         <Route path="/analysis" element={<Analysis />} />
                         <Route path="/prediction" element={<Prediction />} />
                         <Route path="/train-model" element={<TrainModel />} />
-                        {/* <Route path="/feedback" element={<CustomerFeedback />} /> */}
+                        <Route path="/form" element={<Rating />} />
+                        <Route path="/feedback" element={<SentimentAnalysis />} />
                         <Route path="/not-supported" element={<NotSupported />} />
                     </Routes>
                 </main>

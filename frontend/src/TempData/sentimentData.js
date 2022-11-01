@@ -1,14 +1,22 @@
 export const SentimentData = [
 	{
-		label: negative,
-		data: 23,
+		name: 'Very Dissatisfied',
+		rate: 6,
 	},
 	{
-		label: positive,
-		data: 56,
+		name: 'Dissatisfied',
+		rate: 12,
 	},
 	{
-		label: neutral,
-		data: 21,
+		name: 'Neutral',
+		rate: 25,
+	},
+	{
+		name: 'Satisfied',
+		rate: 24,
+	},
+	{
+		name: 'Very Satisfied',
+		rate: 33,
 	},
 ];
