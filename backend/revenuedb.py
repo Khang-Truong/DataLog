@@ -24,4 +24,5 @@ async def fecth_by_range_revenue(start_date,end_date):
         revenues.append(Revenue(**document))
     return revenues
 
+
    

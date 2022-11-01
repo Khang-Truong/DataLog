@@ -36,3 +36,9 @@ class ProductQuantityForecast(BaseModel):
     Day: int
     Month: int
     Year: int
+
+class WeatherForecast(BaseModel):
+    temp: int
+    temp_min: int
+    temp_max: int
+    dt_txt: str  
