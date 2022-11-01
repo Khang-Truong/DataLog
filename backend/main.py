@@ -1,6 +1,8 @@
 from fastapi import FastAPI, HTTPException
 
 from model import Todo
+from model import DailyRevenue
+from model import Wastage
 
 from database import (
     fetch_one_todo,
@@ -9,6 +11,22 @@ from database import (
     update_todo,
     remove_todo,
 )
+
+#------------------------------------#
+
+# for revenues
+from revenuedb import(
+    fetch_latest_revenues
+)
+
+#------------------------------------#
+
+# for wastage
+from wastagedb import(
+    fetch_all_wastage,
+    fetch_date_range_wastage
+)
+
 
 # an HTTP-specific exception class  to generate exception information
 
@@ -29,6 +47,35 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+#getting revenues
+@app.get("/api/revenue")
+async def get_revenue():
+    response = await fetch_latest_revenues()
+    return response
+
+
+#-------------------------------------------#
+
+#getting wastages
+
+# all wastage
+@app.get("/api/wastage")
+async def get_wastage():
+    response = await fetch_all_wastage()
+    return response
+
+#wastage by range
+@app.get("/api/wastage/")
+async def get_by_range_wastage(start_date: str ,end_date:str):
+    response = await fetch_date_range_wastage(start_date,end_date)
+    if response:
+        return response
+    raise HTTPException(404, f"There is no wastage from {start_date} and {end_date}")
+
+
+
+#------this is for todos ---- #
 
 @app.get("/")
 async def read_root():
