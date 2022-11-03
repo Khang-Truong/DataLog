@@ -9,6 +9,9 @@ uvicorn = "==0.14.0"
 motor = "==2.4.0"
 pymongo = {extras = ["srv"], version = "*"}
 requests = "*"
+sklearn = "*"
+pandas = "*"
+xgboost = "*"
 
 [dev-packages]
 

@@ -41,4 +41,10 @@ class WeatherForecast(BaseModel):
     temp: int
     temp_min: int
     temp_max: int
-    dt_txt: str  
+    dt_txt: str 
+
+
+class ML_Model(BaseModel):
+    myxgb: object
+    name: str
+    
