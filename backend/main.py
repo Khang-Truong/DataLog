@@ -19,39 +19,39 @@ from database import (
 #------------------------------------#
 
 # for revenues
-from forecast_revenuedb import(
+from db_forecast_revenue import(
     fetch_latest_forecast_revenues
 )
 
 #------------------------------------#
 
 # for wastage
-from wastagedb import(
+from db_wastage import(
     fetch_all_wastage,
     fetch_date_range_wastage
 )
 
 # for sentiments
 
-from sentimentsdb import(
+from db_sentiments import(
     fetch_all_sentiments,
     fecth_by_range_sentiments
 
 )
 
-from revenuedb import(
+from db_revenue import(
     fetch_all_revenue,
     fecth_by_range_revenue
 )
 
-from forecast_productquantitydb import(
+from db_forecast_productquantity import(
     fetch_latest_forecast_quantity
 )
-from weather import(
+from api_weather import(
     get_weather
 )
 
-from model_test import(
+from ml_model_regression import(
     save_model_to_db,
      load_saved_model_from_db
 
