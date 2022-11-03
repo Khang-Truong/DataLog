@@ -1,14 +1,13 @@
 import imp
 from fastapi import FastAPI, HTTPException
 
+from models.model import Todo
+from models.model import DailyRevenueForecast
+from models.model import Wastage
+from models.model import Sentiments
+from models.model import ProductQuantityForecast
 
-from model import Todo
-from model import DailyRevenueForecast
-from model import Wastage
-from model import Sentiments
-from model import ProductQuantityForecast
-
-from database import (
+from dbs.database import (
     fetch_one_todo,
     fetch_all_todos,
     create_todo,
@@ -19,39 +18,39 @@ from database import (
 #------------------------------------#
 
 # for revenues
-from db_forecast_revenue import(
+from dbs.db_forecast_revenue import(
     fetch_latest_forecast_revenues
 )
 
 #------------------------------------#
 
 # for wastage
-from db_wastage import(
+from dbs.db_wastage import(
     fetch_all_wastage,
     fetch_date_range_wastage
 )
 
 # for sentiments
 
-from db_sentiments import(
+from dbs.db_sentiments import(
     fetch_all_sentiments,
     fecth_by_range_sentiments
 
 )
 
-from db_revenue import(
+from dbs.db_revenue import(
     fetch_all_revenue,
     fecth_by_range_revenue
 )
 
-from db_forecast_productquantity import(
+from dbs.db_forecast_productquantity import(
     fetch_latest_forecast_quantity
 )
 from api_weather import(
     get_weather
 )
 
-from ml_model_regression import(
+from models.ml_model_regression import(
     save_model_to_db,
      load_saved_model_from_db
 

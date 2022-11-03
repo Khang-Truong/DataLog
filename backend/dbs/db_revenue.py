@@ -1,7 +1,7 @@
 from sqlite3 import Cursor
 from typing import Collection
 import motor.motor_asyncio
-from model import Revenue
+from models.model import Revenue
 
 client = motor.motor_asyncio.AsyncIOMotorClient('mongodb+srv://DataLog:DataLog@cluster0.jzr1zc7.mongodb.net/test')
 database = client.DataLog

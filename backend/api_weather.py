@@ -1,7 +1,7 @@
 import requests
 from tkinter import *
 import math
-from model import WeatherForecast
+from models.model import WeatherForecast
 
 def get_weather():
     city_name = "Vancouver,CA"
