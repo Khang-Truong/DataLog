@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import BinaryBackground from '../components/backgrounds/binarybackground'
 import Navbar from '../components/navbar';
 import axios from 'axios';
-
+import Cookies from 'js-cookie';
 
 export default function Business() {
     let { businessname } = useParams();
@@ -48,7 +48,10 @@ export default function Business() {
                 .post("http://127.0.0.1:8000/token", fd)
                 .then((response) => {
                     console.log(response);
-                    // Cookies.set("token", response.data.access_token);
+                    Cookies.set("token", response.data.access_token);
+
+                    localStorage.setItem("user", JSON.stringify(response.data));
+
                     const namecheck = location.state.name.toLowerCase()
                     const url = namecheck.split(' ').join('-')
                     console.log(url)

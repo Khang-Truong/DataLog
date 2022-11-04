@@ -1,23 +1,26 @@
-import { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import MatrixRainingLetters from "../backgrounds/binarybackground"
 import authService from "../../services/auth.service"
 import Business from "../../pages/business"
 import { v4 } from 'uuid'
+import Cookies from 'js-cookie';
 
 export default function NewUser() {
     var CryptoJS = require("crypto-js");
 
-    let [name, setName] = useState('')
-    let [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    let [businesses, setBusinesses] = useState('')
-    const [currentUsername, setCurrentUsername] = useState('')
-    const [currentPassword, setCurrentPassword] = useState('')
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
-
+    const [data, setData] = useState('');
 
     useEffect(() => {
-        
+        const currentuser = localStorage.getItem('user');
+        const userObj = JSON.parse(currentuser);
+        console.log(JSON.stringify(userObj.access_token));
+
+        authService.getCurrentUser().then(
+            res => {
+                console.log(res.data)
+                setUser(res.data)
+            }
+        )
     }, [])
 
     const onUsernameChange = (e) => {

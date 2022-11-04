@@ -13,7 +13,7 @@ class TokenData(BaseModel):
 
 class User(BaseModel):
     username: str
-    password: str
+    # password: str
     firstname: Union[str, None] = None
     lasttname: Union[str, None] = None
     email: Union[str, None] = None
