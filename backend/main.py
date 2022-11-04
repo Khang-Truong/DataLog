@@ -1,9 +1,11 @@
-from fastapi import Depends, FastAPI, HTTPException, BackgroundTasks, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi import Depends, FastAPI, HTTPException, status, BackgroundTasks
+from fastapi.security import OAuth2PasswordRequestForm
+from datetime import timedelta
+from jose import jwt, JWTError
 
-from models.model import DailyRevenueForecast, Wastage, Sentiments, ProductQuantityForecast, User, UserInDB
+from models.model import DailyRevenueForecast, Wastage, Sentiments, ProductQuantityForecast, User, UserInDB, Token, TokenData
 from models.ml_model_regression import save_model_to_db, load_saved_model_from_db
-from authentication import get_db_names, get_db_users, client
+from authentication import get_db_names, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, ALGORITHM, client, oauth2_scheme, pwd_context
 from api_weather import get_weather
 
 from dbs.db_forecast_revenue import fetch_latest_forecast_revenues
@@ -43,15 +45,6 @@ async def get_dbs():
         return response
     raise HTTPException(400, f"Something went wrong")
 
-# @app.post('/api/selected-db')
-# async def selectedDB(db: str, background_tasks: BackgroundTasks):
-#     response = get_db_names()
-#     if db in response:
-#         background_tasks.add_task(get_db_users(db))
-#         return db
-#     raise HTTPException(400, f"Something went wrong")
-
-
 @app.get('/api/get-users')
 async def get_users(db):
     response = get_db_users(db)
@@ -60,55 +53,60 @@ async def get_users(db):
     raise HTTPException(400, f"Something went wrong")
 
 
-@app.post("/token")
-async def login(db: str, form_data: OAuth2PasswordRequestForm = Depends()):
+@app.post("/token", response_model=Token)
+async def login_for_access_token(db: str, form_data: OAuth2PasswordRequestForm = Depends()):
     mydb = client[db]
     mycol = mydb["users"]
     cursor = mycol.find({}, {'_id': 0})
     users = list(cursor)
+    
+    user_found = next((u for u in users if u['username'] == form_data.username), {})
 
-    usernames = []
+    if form_data.username in user_found.get('username'):
+        user_dict = user_found
+        user = UserInDB(**user_dict)
+    else:
+       raise HTTPException(status_code=400,detail="Incorrect username") 
 
-    for u in users:
-        usernames.append(u.get('username'))
+    if pwd_context.verify(form_data.password, user.password):
+        user
+    else:
+        raise HTTPException(status_code=400,detail="Incorrect password")
 
-    user_dict = next((u for u in users if u['username'] == form_data.username), {})
-    if not user_dict:
-        raise HTTPException(status_code=400)
-    user = UserInDB(**user_dict)
-    hashed_password = "fakehashed" + form_data.password
-    if not hashed_password == user.password:
-        raise HTTPException(status_code=400,detail="Incorrect username or password")
-
-    return {"access_token": user.username, "token_type": "bearer"}
-
-
-def get_user(db, username: str):
-    if username in db:
-        user_dict = db[username]
-        return UserInDB(**user_dict)
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.username}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
 
 
-def fake_decode_token(db, token):
+async def get_current_user(db:str, token: str = Depends(oauth2_scheme)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+        token_data = TokenData(username=username)
+    except JWTError:
+        raise credentials_exception
+
     mydb = client[db]
     mycol = mydb["users"]
     cursor = mycol.find({}, {'_id': 0})
     users = list(cursor)
-    user = get_user(users, token)
-    return user
+    
+    user_found = next((u for u in users if u['username'] == token_data.username), {})
 
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-
-async def get_current_user(db, token: str = Depends(oauth2_scheme)):
-    user = fake_decode_token(db, token)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+    if token_data.username in user_found.get('username'):
+        user_dict = user_found
+        user = UserInDB(**user_dict)
+    else:
+        raise credentials_exception
     return user
 
 
@@ -118,9 +116,16 @@ async def get_current_active_user(current_user: User = Depends(get_current_user)
     return current_user
 
 
-@app.get("/users/me")
+@app.get("/users/me/", response_model=User)
 async def read_users_me(current_user: User = Depends(get_current_active_user)):
     return current_user
+
+
+@app.get("/users/me/items/")
+async def read_own_items(current_user: User = Depends(get_current_active_user)):
+    return [{"item_id": "Foo", "owner": current_user.username}]
+
+
 
 #-------------------------------------------#
 # getting wastages
