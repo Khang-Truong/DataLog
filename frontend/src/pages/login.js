@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BinaryBackground from '../components/backgrounds/binarybackground';
 import Navbar from '../components/navbar';
-import { businesses } from "../TempData/UserData";
+import authService from "../services/auth.service";
 
 export default function Login(props) {
     const navigate = useNavigate();
+    let [businesses, setBusinesses] = useState([])
     let [businessName, setBusinessName] = useState('');
 
     const onInputChange = (e) => {
@@ -13,23 +14,12 @@ export default function Login(props) {
     }
 
     useEffect(() => {
-
-        if ('business' in localStorage) {
-            const currentbusiness = JSON.parse(localStorage.getItem('business'))
-            const namecheck = currentbusiness.name.toLowerCase()
-
-            if ('isLoggedIn' in localStorage) {
-                const isLoggedin = JSON.parse(localStorage.getItem('isLoggedIn'))
-                console.log(isLoggedin)
-                if (isLoggedin == true) {
-                    navigate(`/${namecheck.split(' ').join('-')}/dashboard`);
-                } else {
-                    navigate('/')
-                }
-
+        authService.getDatabases().then(
+            res => {
+                console.log(res.data)
+                setBusinesses(res.data)
             }
-        }
-
+        )
     }, [])
 
     function continueLogin(e) {
@@ -40,14 +30,14 @@ export default function Login(props) {
         if (businessName != '') {
             document.getElementById('alertInput').style.display = `none`
             businesses.map(function (business) {
-                if (namecheck == business.name.toLowerCase()) {
-                    localStorage.setItem('business', JSON.stringify(business));
-                    console.log(localStorage.getItem('business'))
+                if (namecheck == business.toLowerCase()) {
+                    // localStorage.setItem('business', JSON.stringify(business));
+                    // console.log(localStorage.getItem('business'))
 
                     const url = namecheck.split(' ').join('-')
                     console.log(businessName)
 
-                    navigate(`/${url}`);
+                    navigate(`/${url}`,{state:{name:`${business}`}})
                 } else {
                     document.getElementById('alertInput').innerText = 'Invalid business name.\nPlease try again.'
                     document.getElementById('alertInput').style.display = `block`

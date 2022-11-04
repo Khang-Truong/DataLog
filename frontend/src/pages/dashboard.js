@@ -17,16 +17,7 @@ export default function Dashboard() {
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		if ('user' in localStorage && ('business' in localStorage)) {
-			const currentuser = JSON.parse(localStorage.getItem('user'))
-			setUser(currentuser)
-			setNewUser(currentuser.newuser)
-			console.log(currentuser.id)
-		}
-		else {
-			navigate('/')
-		}
-
+		setNewUser(false)
 	}, [])
 
 	return (

@@ -1,11 +1,10 @@
-from fastapi import Depends, FastAPI, HTTPException, status, BackgroundTasks
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import timedelta
-from jose import jwt, JWTError
 
-from models.model import DailyRevenueForecast, Wastage, Sentiments, ProductQuantityForecast, User, UserInDB, Token, TokenData
+from models.model import DailyRevenueForecast, Wastage, Sentiments, ProductQuantityForecast, User, UserInDB, Token
 from models.ml_model_regression import save_model_to_db, load_saved_model_from_db
-from authentication import get_db_names, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, ALGORITHM, client, oauth2_scheme, pwd_context
+from authentication import get_db_names, create_access_token, get_current_active_user, ACCESS_TOKEN_EXPIRE_MINUTES, client, pwd_context
 from api_weather import get_weather
 
 from dbs.db_forecast_revenue import fetch_latest_forecast_revenues
@@ -20,6 +19,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:3000",
+    'hhtp://localhost'
 ]
 
 # what is a middleware?
@@ -46,7 +46,7 @@ async def get_dbs():
     raise HTTPException(400, f"Something went wrong")
 
 
-@app.post("/token", response_model=Token)
+@app.post('/token', response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     db = form_data.client_id
     mydb = client[db]
@@ -72,44 +72,6 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
         data={'username': user.username, 'db':user.db}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
-
-
-async def get_current_user(token: str = Depends(oauth2_scheme)):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get('username')
-        db: str = payload.get('db')
-        if username is None:
-            raise credentials_exception
-        token_data = TokenData(username=username, db=db)
-    except JWTError:
-        raise credentials_exception
-    
-    mydb = client[token_data.db]
-    mycol = mydb["users"]
-    cursor = mycol.find({}, {'_id': 0})
-    users = list(cursor)
-
-    user_found = next((u for u in users if u['username'] == token_data.username), {})
-
-    if token_data.username in user_found.get('username'):
-        user_dict = user_found
-        user = UserInDB(**user_dict)
-    else:
-        raise credentials_exception
-    return user
-
-
-async def get_current_active_user(current_user: User = Depends(get_current_user)):
-    if current_user.disabled:
-        raise HTTPException(status_code=400, detail="Inactive user")
-    return current_user
-
 
 @app.get("/users/me/", response_model=User)
 async def read_users_me(current_user: User = Depends(get_current_active_user)):

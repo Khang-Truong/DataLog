@@ -34,22 +34,6 @@ function Navbar() {
             || window.location.pathname.includes('/dashboard') || window.location.pathname.includes('/train-model')
             || window.location.pathname.includes('/prediction') || window.location.pathname.includes('/feedback')) {
             setShowNavbar(false)
-            
-            if ('user' in localStorage && ('business' in localStorage)) {
-                const currentuser = JSON.parse(localStorage.getItem('user'))
-                setUser(currentuser)
-                console.log(currentuser.id)
-
-                const firstinitial = Array.from(currentuser.firstname)[0];
-                const lastinitial = Array.from(currentuser.lastname)[0];
-                setInitials(firstinitial + lastinitial)
-
-                const currentbusiness = JSON.parse(localStorage.getItem('business'))
-                const namecheck = currentbusiness.name.toLowerCase()
-                setUrl(namecheck.split(' ').join('-'))
-            } else {
-                navigate('/')
-            }
         }
 
         eventBus.on('logout', () => {
