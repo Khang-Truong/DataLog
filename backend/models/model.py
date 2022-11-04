@@ -1,17 +1,25 @@
 # Pydantic allows auto creation of JSON Schemas from models
 from sqlite3 import Date
 from pydantic import BaseModel
+from typing import Union
 
-class Todo(BaseModel):
-    title: str
-    description: str
+class User(BaseModel):
+    username: str
+    password: str
+    firstname: Union[str, None] = None
+    lasttname: Union[str, None] = None
+    business: Union[str, None] = None
+    email: Union[str, None] = None
+    newuser: Union[bool, None] = None
+    disabled: Union[str, None] = None
 
+class UserInDB(User):
+    password: str
 
 class DailyRevenueForecast(BaseModel):
     Date: str
     PredictedRevenue: int
     Flag_latest: str
-
 
 #didn't really use, for noww
 class Wastage(BaseModel):

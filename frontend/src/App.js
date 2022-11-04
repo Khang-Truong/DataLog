@@ -50,7 +50,7 @@ export default function App() {
                             <Route path="/:businessname/train-model" element={<TrainModel />} />
                             {/* <Route path="/feedback" element={<CustomerFeedback />} /> */}
                             <Route path="/not-supported" element={<NotSupported />} />
-                            <Route path="*" element={<Home />} />
+                            {/* <Route path="*" element={<Home />} /> */}
                         </Routes>
                         )}
                 </main>
