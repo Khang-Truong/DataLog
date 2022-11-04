@@ -15,17 +15,9 @@ export default function NewUser() {
     const [currentPassword, setCurrentPassword] = useState('')
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
 
-    let currentbusiness = JSON.parse(localStorage.getItem('business'))
 
     useEffect(() => {
-        if (!('user' in localStorage && 'business' in localStorage)) {
-            navigate('/')
-        } else {
-            setBusinesses(currentbusiness)
-            setName(user.firstname)
-            setCurrentUsername(user.username)
-            setCurrentPassword(user.password)
-        }
+        
     }, [])
 
     const onUsernameChange = (e) => {

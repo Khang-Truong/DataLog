@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import BinaryBackground from '../components/backgrounds/binarybackground'
 import Navbar from '../components/navbar';
-import { businesses } from '../TempData/UserData';
+import axios from 'axios';
 
-export default function Business(props) {
+
+export default function Business() {
     let { businessname } = useParams();
     const navigate = useNavigate();
     const [isBusinessReady, setBusinessReady] = useState(false);
-    const [business, setBusiness] = useState('')
-    const [users, setUsers] = useState('')
-    const [businessName, setBusinessName] = useState('');
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [url, setUrl] = useState('')
+
+    const location = useLocation();
 
     const onUsernameChange = (e) => {
         setUsername(e.target.value)
@@ -24,31 +23,11 @@ export default function Business(props) {
     }
 
     useEffect(() => {
-        //const currentBusiness = AuthService.getCurrentBusiness();
-        const currentbusiness = JSON.parse(localStorage.getItem('business'))
-        const namecheck = currentbusiness.name.toLowerCase()
-
-        if ('business' in localStorage) {
-            setBusinessReady(true);
-            setBusiness(currentbusiness)
-            setBusinessName(currentbusiness.name)
-            setUrl(namecheck.split(' ').join('-'))
-            setUsers(currentbusiness.users)
+        if (location.state.name != '') {
+            setBusinessReady(true)
         } else {
-            navigate('/')
+            navigate('/login')
         }
-
-        if ('isLoggedIn' in localStorage) {
-            const isLoggedin = JSON.parse(localStorage.getItem('isLoggedIn'))
-            console.log(isLoggedin)
-            if (isLoggedin == true) {
-                navigate(`/${namecheck.split(' ').join('-')}/dashboard`);
-            } else {
-                navigate('/')
-            }
-
-        }
-
     }, []);
 
     function continueLogin(e) {
@@ -58,19 +37,26 @@ export default function Business(props) {
             document.getElementById('alertInput').style.display = `none`
             console.log(username)
             console.log(password)
-            console.log(users[0].username)
+            console.log(location.state.name)
 
-            users.map(function (user) {
-                if (username == user.username && password == user.password) {
-                    localStorage.setItem('user', JSON.stringify(user));
-                    localStorage.setItem('isLoggedIn', JSON.stringify(true))
-                    console.log(localStorage.getItem('user'))
+            const fd = new FormData()
+            fd.append('username', username)
+            fd.append('password', password)
+            fd.append('client_id', location.state.name)
+
+            axios
+                .post("http://127.0.0.1:8000/token", fd)
+                .then((response) => {
+                    console.log(response);
+                    // Cookies.set("token", response.data.access_token);
+                    const namecheck = location.state.name.toLowerCase()
+                    const url = namecheck.split(' ').join('-')
+                    console.log(url)
                     navigate(`/${url}/dashboard`);
-                } else {
-                    document.getElementById('alertInput').innerText = 'Invalid username or password.\nPlease try again.'
-                    document.getElementById('alertInput').style.display = `block`
-                }
-            })
+                })
+                .catch((error) => {
+                    console.log(error.message);
+                });
         } else {
             document.getElementById('alertInput').innerText = 'Please enter your username and password.'
             document.getElementById('alertInput').style.display = `block`
@@ -86,7 +72,7 @@ export default function Business(props) {
                         <div style={{ width: '100vw' }}>
                             <div className="col-md-12" style={{ padding: '1rem 5rem', display: 'flex', justifyContent: 'center' }}>
                                 <div className={`card card-container`} id={`cardBackground`}>
-                                    <h1 className="text-center">{`${businessName}`} Customer Login</h1>
+                                    <h1 className="text-center">{`${location.state.name}`} Customer Login</h1>
                                     <form className="row g-3" style={{ marginTop: '0.5rem' }} onSubmit={continueLogin}>
                                         <h6 id='alertInput' style={{ display: 'none', color: 'red', paddingTop: '0' }}>Please enter your username and password.</h6>
                                         <div className="col-12">
