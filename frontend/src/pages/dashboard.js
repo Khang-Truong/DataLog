@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 export default function Dashboard() {
 	let { businessname } = useParams();
+	const Auth = React.useContext(AuthApi);
 
 	const initialDate = UserData.map((user) => user.date);
 	const initialDataPoint = UserData.map((data) => data.userGain);
@@ -17,7 +18,7 @@ export default function Dashboard() {
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		setNewUser(false)
+		setNewUser(true)
 	}, [])
 
 	return (
