@@ -9,16 +9,18 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: Union[str, None] = None
+    db: Union[str, None] = None
 
 class User(BaseModel):
     username: str
     password: str
     firstname: Union[str, None] = None
     lasttname: Union[str, None] = None
-    business: Union[str, None] = None
     email: Union[str, None] = None
     newuser: Union[bool, None] = None
-    disabled: Union[str, None] = None
+    disabled: Union[bool, None] = None
+    db: Union[str, None] = None
+
 
 class UserInDB(User):
     password: str

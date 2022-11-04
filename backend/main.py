@@ -45,16 +45,10 @@ async def get_dbs():
         return response
     raise HTTPException(400, f"Something went wrong")
 
-@app.get('/api/get-users')
-async def get_users(db):
-    response = get_db_users(db)
-    if response:
-        return response
-    raise HTTPException(400, f"Something went wrong")
-
 
 @app.post("/token", response_model=Token)
-async def login_for_access_token(db: str, form_data: OAuth2PasswordRequestForm = Depends()):
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    db = form_data.client_id
     mydb = client[db]
     mycol = mydb["users"]
     cursor = mycol.find({}, {'_id': 0})
@@ -75,12 +69,12 @@ async def login_for_access_token(db: str, form_data: OAuth2PasswordRequestForm =
 
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
+        data={'username': user.username, 'db':user.db}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-async def get_current_user(db:str, token: str = Depends(oauth2_scheme)):
+async def get_current_user(token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -88,18 +82,19 @@ async def get_current_user(db:str, token: str = Depends(oauth2_scheme)):
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
+        username: str = payload.get('username')
+        db: str = payload.get('db')
         if username is None:
             raise credentials_exception
-        token_data = TokenData(username=username)
+        token_data = TokenData(username=username, db=db)
     except JWTError:
         raise credentials_exception
-
-    mydb = client[db]
+    
+    mydb = client[token_data.db]
     mycol = mydb["users"]
     cursor = mycol.find({}, {'_id': 0})
     users = list(cursor)
-    
+
     user_found = next((u for u in users if u['username'] == token_data.username), {})
 
     if token_data.username in user_found.get('username'):
