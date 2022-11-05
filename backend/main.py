@@ -4,13 +4,14 @@ from datetime import timedelta
 
 from models.model import DailyRevenueForecast, Wastage, Sentiments, ProductQuantityForecast, User, UserInDB, Token
 from models.ml_model_regression import save_model_to_db, load_saved_model_from_db
-from authentication import get_db_names, create_access_token, get_current_active_user, ACCESS_TOKEN_EXPIRE_MINUTES, client, pwd_context
+from authentication import get_db_names, create_access_token, get_current_active_user, get_access_token, client, pwd_context
 from api_weather import get_weather
 
-from models.model import DailyRevenueForecast
-from models.model import Wastage
-from models.model import Sentiments
-from models.model import ProductQuantityForecast
+from dbs.db_forecast_productquantity import fetch_latest_forecast_quantity
+from dbs.db_forecast_revenue import fetch_latest_forecast_revenues
+from dbs.db_revenue import fecth_by_range_revenue, fetch_all_revenue
+from dbs.db_sentiments import create_sentiments,fecth_by_range_sentiments,fetch_all_sentiments
+from dbs.db_wastage import fetch_all_wastage,fetch_date_range_wastage
 
 # an HTTP-specific exception class  to generate exception information
 from fastapi.middleware.cors import CORSMiddleware
@@ -65,8 +66,8 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
         user
     else:
         raise HTTPException(status_code=400,detail="Incorrect password")
-
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    expiry = get_access_token()
+    access_token_expires = timedelta(minutes=expiry)
     access_token = create_access_token(
         data={'username': user.username, 'db':user.db}, expires_delta=access_token_expires
     )
@@ -129,7 +130,7 @@ async def get_sentiment_by_range(start_date: str, end_date: str):
 
 @app.post("/api/insert_sentiments/", response_model=Sentiments)
 async def post_todo(sentiments: Sentiments):
-    response = await create_todo(sentiments.dict())
+    response = await create_sentiments(sentiments.dict())
     if response:
         return response
     raise HTTPException(400, "Something went wrong")
