@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom'
 import AuthService from "../services/auth.service";
 import eventBus from "../common/eventbus";
+import authService from "../services/auth.service";
 
 function Navbar() {
     const [showLoginBtn, setShowLoginBtn] = useState(false);
@@ -12,9 +13,8 @@ function Navbar() {
     const navigate = useNavigate()
 
     const logOut = () => {
-        localStorage.removeItem('isLoggedIn')
+        localStorage.removeItem('token')
         localStorage.removeItem('user')
-        localStorage.removeItem('business')
 
         AuthService.logout();
         navigate('/')
@@ -34,6 +34,14 @@ function Navbar() {
             || window.location.pathname.includes('/dashboard') || window.location.pathname.includes('/train-model')
             || window.location.pathname.includes('/prediction') || window.location.pathname.includes('/feedback')) {
             setShowNavbar(false)
+
+            authService.getCurrentUser().then((response) => {
+                console.log(response);
+                localStorage.setItem("user", JSON.stringify(response.data));
+                setUser(response.data)
+            }).catch((error) => {
+                console.log(error);
+            });
         }
 
         eventBus.on('logout', () => {

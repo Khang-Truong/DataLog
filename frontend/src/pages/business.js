@@ -50,7 +50,6 @@ export default function Business() {
                     // Cookies.set("token", response.data.access_token);
 
                     localStorage.setItem("token", JSON.stringify(response.data));
-
                     const namecheck = location.state.name.toLowerCase()
                     const url = namecheck.split(' ').join('-')
                     console.log(url)

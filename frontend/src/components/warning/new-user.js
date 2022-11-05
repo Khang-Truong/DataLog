@@ -8,16 +8,12 @@ import axios from 'axios';
 export default function NewUser() {
     var CryptoJS = require("crypto-js");
 
-    const [user, setUser] = useState('');
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+    let [password, setPassword] = useState('')
+    let [username, setUsername] = useState('')
 
-    useEffect(() => {       
-       authService.getCurrentUser().then((response) => {
-            console.log(response);
-            localStorage.setItem("user", JSON.stringify(response.data));
-            setUser(response.data)
-        }).catch((error) => {
-            console.log(error);
-        });
+    useEffect(() => {
+
     }, []);
 
     const onUsernameChange = (e) => {
@@ -37,33 +33,33 @@ export default function NewUser() {
         if (username != '' && password != '') {
             document.getElementById('alertInput').style.display = `none`
 
-            if (username != currentUsername && password != currentPassword) {
+            if (username != user.username && password != user.password) {
                 if ((username.length > 5 && username.length < 17) && usernameRegex.test(username) && passwordRegex.test(password)) {
                     document.getElementById('alertUsername').style.display = `none`
                     document.getElementById('alertUsername1').style.display = `none`
                     document.getElementById('alertPassword').style.display = `none`
 
-                    let key = v4()
-                    localStorage.setItem('key', JSON.stringify(key));
+                    // let key = v4()
+                    // localStorage.setItem('key', JSON.stringify(key));
 
-                    const encrypted = CryptoJS.AES.encrypt(password, key);
-                    console.log(encrypted.toString());
+                    // const encrypted = CryptoJS.AES.encrypt(password, key);
+                    // console.log(encrypted.toString());
 
-                    key = JSON.parse(localStorage.getItem('key'))
-                    const decrypted = CryptoJS.AES.decrypt(encrypted, key).toString(CryptoJS.enc.Utf8);
-                    console.log(decrypted);
+                    // key = JSON.parse(localStorage.getItem('key'))
+                    // const decrypted = CryptoJS.AES.decrypt(encrypted, key).toString(CryptoJS.enc.Utf8);
+                    // console.log(decrypted);
 
-                    user.username = username
-                    user.password = encrypted.toString()
-                    user.newuser = false
-                    localStorage.setItem('user', JSON.stringify(user));
-                    localStorage.setItem('business', JSON.stringify(Object.assign({}, businesses, { users: user }))
-                    )
+                    // user.username = username
+                    // user.password = encrypted.toString()
+                    // user.newuser = false
+                    // localStorage.setItem('user', JSON.stringify(user));
+                    // localStorage.setItem('business', JSON.stringify(Object.assign({}, businesses, { users: user }))
+                    // )
 
-                    console.log(JSON.parse(localStorage.getItem('user')))
-                    console.log(JSON.parse(localStorage.getItem('business')))
+                    // console.log(JSON.parse(localStorage.getItem('user')))
+                    // console.log(JSON.parse(localStorage.getItem('business')))
 
-                    window.location.reload()
+                    // window.location.reload()
                 } else {
                     if (username.length < 6 || username.length > 16) {
                         document.getElementById('alertUsername').style.display = `block`
@@ -84,7 +80,7 @@ export default function NewUser() {
                     }
                 }
             } else {
-                if (password == currentPassword) {
+                if (password == user.password) {
                     document.getElementById('alertPassword').innerText = 'Your new password cannot be the same as your current one.'
                     document.getElementById('alertPassword').style.display = `block`
                 } else {
@@ -92,7 +88,7 @@ export default function NewUser() {
                     document.getElementById('alertPassword').style.display = `none`
                 }
 
-                if (username == currentUsername) {
+                if (username == user.username) {
                     document.getElementById('alertUsername').innerText = 'Your new username cannot be the same as your current one.'
                     document.getElementById('alertUsername').style.display = `block`
                 } else {

@@ -15,7 +15,7 @@ class User(BaseModel):
     username: str
     # password: str
     firstname: Union[str, None] = None
-    lasttname: Union[str, None] = None
+    lastname: Union[str, None] = None
     email: Union[str, None] = None
     newuser: Union[bool, None] = None
     disabled: Union[bool, None] = None

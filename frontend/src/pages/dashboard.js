@@ -4,6 +4,7 @@ import BarchartFilterDate from '../components/Charts/BarchartFilterDate';
 import NewUser from '../components/warning/new-user';
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import authService from '../services/auth.service';
 
 export default function Dashboard() {
 	let { businessname } = useParams();
@@ -12,12 +13,12 @@ export default function Dashboard() {
 	const initialDataPoint = UserData.map((data) => data.userGain);
 
 	const [newUser, setNewUser] = useState(false)
-	const [user, setUser] = useState('')
+	const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
 
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		setNewUser(true)
+		setNewUser(user.newuser)
 	}, [])
 
 	return (
