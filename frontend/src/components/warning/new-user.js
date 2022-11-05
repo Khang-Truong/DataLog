@@ -10,14 +10,8 @@ export default function NewUser() {
 
     const [user, setUser] = useState('');
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        const tokenObj = JSON.parse(token)
-        axios.get(`http://localhost:8000/api/users/me/`, {
-            headers: {
-                'Authorization': `Bearer ${tokenObj.access_token}`
-            }
-        }).then((response) => {
+    useEffect(() => {       
+       authService.getCurrentUser().then((response) => {
             console.log(response);
             localStorage.setItem("user", JSON.stringify(response.data));
             setUser(response.data)

@@ -9,7 +9,14 @@ class AuthService {
     }
 
     async getCurrentUser() {
-        return axios.get(API_URL + '/users/me/')
+        const token = localStorage.getItem('token');
+        const tokenObj = JSON.parse(token)
+
+        return axios.get(API_URL + `/users/me/`, {
+            headers: {
+                'Authorization': `Bearer ${tokenObj.access_token}`
+            }
+        })
     }
 
 
