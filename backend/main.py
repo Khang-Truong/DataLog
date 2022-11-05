@@ -1,3 +1,4 @@
+import imp
 from fastapi import FastAPI, HTTPException
 
 
@@ -48,6 +49,12 @@ from forecast_productquantitydb import(
 )
 from weather import(
     get_weather
+)
+
+from model_test import(
+    save_model_to_db,
+     load_saved_model_from_db
+
 )
 
 
@@ -140,11 +147,30 @@ async def get_quantity_forecast():
 #-------------------------------------------#
 # weather api
 
-
 @app.get("/api/forecasted_weather")
 def get_weather_forecast():
     response = get_weather()
     return response
+
+#-------------------------------------------#
+# model api
+@app.get("/api/model_regression")
+async def put_model():
+    response = save_model_to_db()
+    if response:
+        return response
+    raise HTTPException(400, f"Something went wrong")
+
+@app.get("/api/model_regression_result")
+async def put_model():
+    response = load_saved_model_from_db(get_weather())
+    if response:
+        return response
+    raise HTTPException(400, f"Something went wrong")
+
+
+
+
 
 
 
