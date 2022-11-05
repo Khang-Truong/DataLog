@@ -7,11 +7,61 @@ from models.ml_model_regression import save_model_to_db, load_saved_model_from_d
 from authentication import get_db_names, create_access_token, get_current_active_user, ACCESS_TOKEN_EXPIRE_MINUTES, client, pwd_context
 from api_weather import get_weather
 
-from dbs.db_forecast_revenue import fetch_latest_forecast_revenues
-from dbs.db_wastage import fetch_all_wastage, fetch_date_range_wastage
-from dbs.db_sentiments import fetch_all_sentiments, fecth_by_range_sentiments
-from dbs.db_revenue import fetch_all_revenue, fecth_by_range_revenue
-from dbs.db_forecast_productquantity import fetch_latest_forecast_quantity
+from model import Todo
+from model import DailyRevenueForecast
+from model import Wastage
+from model import Sentiments
+from model import ProductQuantityForecast
+
+from database import (
+    fetch_one_todo,
+    fetch_all_todos,
+    create_todo,
+    update_todo,
+    remove_todo,
+)
+
+#------------------------------------#
+
+# for revenues
+from forecast_revenuedb import(
+    fetch_latest_forecast_revenues
+)
+
+#------------------------------------#
+
+# for wastage
+from wastagedb import(
+    fetch_all_wastage,
+    fetch_date_range_wastage
+)
+
+# for sentiments
+
+from sentimentsdb import(
+    fetch_all_sentiments,
+    fecth_by_range_sentiments
+
+)
+
+from revenuedb import(
+    fetch_all_revenue,
+    fecth_by_range_revenue
+)
+
+from forecast_productquantitydb import(
+    fetch_latest_forecast_quantity
+)
+from weather import(
+    get_weather
+)
+
+from model_test import(
+    save_model_to_db,
+     load_saved_model_from_db
+
+)
+
 
 # an HTTP-specific exception class  to generate exception information
 from fastapi.middleware.cors import CORSMiddleware
@@ -125,6 +175,17 @@ async def get_sentiment_by_range(start_date: str, end_date: str):
     raise HTTPException(
         404, f"There is no sentiments from {start_date} and {end_date}")
 
+#inserting sentiments
+
+
+@app.post("/api/insert_sentiments/", response_model=Sentiments)
+async def post_todo(sentiments: Sentiments):
+    response = await create_todo(sentiments.dict())
+    if response:
+        return response
+    raise HTTPException(400, "Something went wrong")
+
+
 #-------------------------------------------#
 # revenue
 
@@ -143,13 +204,10 @@ async def get_revenue_by_range(start_date: str, end_date: str):
     raise HTTPException(
         404, f"There is no revenues from {start_date} and {end_date}")
 
-#-------------------------------------------#
-# product quantity
-
 
 @app.get("/api/quantity_forecast")
 async def get_quantity_forecast():
-    response = await fetch_latest_forecast_quantity()
+    response = await  fetch_latest_forecast_quantity()
     return response
 
 
@@ -172,10 +230,53 @@ async def put_model():
         return response
     raise HTTPException(400, f"Something went wrong")
 
-
 @app.get("/api/model_regression_result")
 async def put_model():
     response = load_saved_model_from_db(get_weather())
     if response:
         return response
     raise HTTPException(400, f"Something went wrong")
+
+
+
+
+
+
+
+#------this is for todos ---- #
+@app.get("/")
+async def read_root():
+    return {"Hello": "World"}
+
+@app.get("/api/todo")
+async def get_todo():
+    response = await fetch_all_todos()
+    return response
+
+@app.get("/api/todo/{title}", response_model=Todo)
+async def get_todo_by_title(title):
+    response = await fetch_one_todo(title)
+    if response:
+        return response
+    raise HTTPException(404, f"There is no todo with the title {title}")
+
+@app.post("/api/todo/", response_model=Todo)
+async def post_todo(todo: Todo):
+    response = await create_todo(todo.dict())
+    if response:
+        return response
+    raise HTTPException(400, "Something went wrong")
+
+@app.put("/api/todo/{title}/", response_model=Todo)
+async def put_todo(title: str, desc: str):
+    response = await update_todo(title, desc)
+    if response:
+        return response
+    raise HTTPException(404, f"There is no todo with the title {title}")
+
+@app.delete("/api/todo/{title}")
+async def delete_todo(title):
+    response = await remove_todo(title)
+    if response:
+        return "Successfully deleted todo"
+    raise HTTPException(404, f"There is no todo with the title {title}")
