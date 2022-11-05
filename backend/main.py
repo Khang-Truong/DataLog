@@ -7,61 +7,10 @@ from models.ml_model_regression import save_model_to_db, load_saved_model_from_d
 from authentication import get_db_names, create_access_token, get_current_active_user, ACCESS_TOKEN_EXPIRE_MINUTES, client, pwd_context
 from api_weather import get_weather
 
-from model import Todo
-from model import DailyRevenueForecast
-from model import Wastage
-from model import Sentiments
-from model import ProductQuantityForecast
-
-from database import (
-    fetch_one_todo,
-    fetch_all_todos,
-    create_todo,
-    update_todo,
-    remove_todo,
-)
-
-#------------------------------------#
-
-# for revenues
-from forecast_revenuedb import(
-    fetch_latest_forecast_revenues
-)
-
-#------------------------------------#
-
-# for wastage
-from wastagedb import(
-    fetch_all_wastage,
-    fetch_date_range_wastage
-)
-
-# for sentiments
-
-from sentimentsdb import(
-    fetch_all_sentiments,
-    fecth_by_range_sentiments
-
-)
-
-from revenuedb import(
-    fetch_all_revenue,
-    fecth_by_range_revenue
-)
-
-from forecast_productquantitydb import(
-    fetch_latest_forecast_quantity
-)
-from weather import(
-    get_weather
-)
-
-from model_test import(
-    save_model_to_db,
-     load_saved_model_from_db
-
-)
-
+from models.model import DailyRevenueForecast
+from models.model import Wastage
+from models.model import Sentiments
+from models.model import ProductQuantityForecast
 
 # an HTTP-specific exception class  to generate exception information
 from fastapi.middleware.cors import CORSMiddleware
@@ -236,47 +185,3 @@ async def put_model():
     if response:
         return response
     raise HTTPException(400, f"Something went wrong")
-
-
-
-
-
-
-
-#------this is for todos ---- #
-@app.get("/")
-async def read_root():
-    return {"Hello": "World"}
-
-@app.get("/api/todo")
-async def get_todo():
-    response = await fetch_all_todos()
-    return response
-
-@app.get("/api/todo/{title}", response_model=Todo)
-async def get_todo_by_title(title):
-    response = await fetch_one_todo(title)
-    if response:
-        return response
-    raise HTTPException(404, f"There is no todo with the title {title}")
-
-@app.post("/api/todo/", response_model=Todo)
-async def post_todo(todo: Todo):
-    response = await create_todo(todo.dict())
-    if response:
-        return response
-    raise HTTPException(400, "Something went wrong")
-
-@app.put("/api/todo/{title}/", response_model=Todo)
-async def put_todo(title: str, desc: str):
-    response = await update_todo(title, desc)
-    if response:
-        return response
-    raise HTTPException(404, f"There is no todo with the title {title}")
-
-@app.delete("/api/todo/{title}")
-async def delete_todo(title):
-    response = await remove_todo(title)
-    if response:
-        return "Successfully deleted todo"
-    raise HTTPException(404, f"There is no todo with the title {title}")
