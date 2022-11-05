@@ -22,6 +22,8 @@ class Wastage(BaseModel):
 
 class Sentiments(BaseModel):
     Classification: str
+    Rating: str
+    Comment: str
     Date: str
 
 class Revenue(BaseModel):

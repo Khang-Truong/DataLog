@@ -19,39 +19,39 @@ from database import (
 #------------------------------------#
 
 # for revenues
-from forecast_revenuedb import(
+from db_forecast_revenue import(
     fetch_latest_forecast_revenues
 )
 
 #------------------------------------#
 
 # for wastage
-from wastagedb import(
+from db_wastage import(
     fetch_all_wastage,
     fetch_date_range_wastage
 )
 
 # for sentiments
 
-from sentimentsdb import(
+from db_sentiments import(
     fetch_all_sentiments,
     fecth_by_range_sentiments
 
 )
 
-from revenuedb import(
+from db_revenue import(
     fetch_all_revenue,
     fecth_by_range_revenue
 )
 
-from forecast_productquantitydb import(
+from db_forecast_productquantity import(
     fetch_latest_forecast_quantity
 )
-from weather import(
+from api_weather import(
     get_weather
 )
 
-from model_test import(
+from ml_model_regression import(
     save_model_to_db,
      load_saved_model_from_db
 
@@ -120,6 +120,17 @@ async def get_sentiment_by_range(start_date: str, end_date:str):
         return response
     raise HTTPException(404, f"There is no sentiments from {start_date} and {end_date}")
 
+#inserting sentiments
+
+
+@app.post("/api/insert_sentiments/", response_model=Sentiments)
+async def post_todo(sentiments: Sentiments):
+    response = await create_todo(sentiments.dict())
+    if response:
+        return response
+    raise HTTPException(400, "Something went wrong")
+
+
 #-------------------------------------------#
 # revenue
 @app.get("/api/revenues")
@@ -135,13 +146,7 @@ async def get_revenue_by_range(start_date: str, end_date:str):
         return response
     raise HTTPException(404, f"There is no revenues from {start_date} and {end_date}")
 
-#-------------------------------------------#
-# product quantity
 
-@app.get("/api/quantity_forecast")
-async def get_quantity_forecast():
-    response = await  fetch_latest_forecast_quantity()
-    return response
 
 
 #-------------------------------------------#
@@ -161,12 +166,17 @@ async def put_model():
         return response
     raise HTTPException(400, f"Something went wrong")
 
-@app.get("/api/model_regression_result")
+#-------------------------------------------#
+# product quantity
+
+
+@app.get("/api/quantity_forecast")
 async def put_model():
     response = load_saved_model_from_db(get_weather())
     if response:
         return response
     raise HTTPException(400, f"Something went wrong")
+
 
 
 
