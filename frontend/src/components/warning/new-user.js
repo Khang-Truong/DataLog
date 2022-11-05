@@ -39,27 +39,27 @@ export default function NewUser() {
                     document.getElementById('alertUsername1').style.display = `none`
                     document.getElementById('alertPassword').style.display = `none`
 
-                    // let key = v4()
-                    // localStorage.setItem('key', JSON.stringify(key));
+                    let key = v4()
+                    localStorage.setItem('key', JSON.stringify(key));
 
-                    // const encrypted = CryptoJS.AES.encrypt(password, key);
-                    // console.log(encrypted.toString());
+                    const encrypted = CryptoJS.AES.encrypt(password, key);
+                    console.log(encrypted.toString());
 
-                    // key = JSON.parse(localStorage.getItem('key'))
-                    // const decrypted = CryptoJS.AES.decrypt(encrypted, key).toString(CryptoJS.enc.Utf8);
-                    // console.log(decrypted);
+                    key = JSON.parse(localStorage.getItem('key'))
+                    const decrypted = CryptoJS.AES.decrypt(encrypted, key).toString(CryptoJS.enc.Utf8);
+                    console.log(decrypted);
 
-                    // user.username = username
-                    // user.password = encrypted.toString()
-                    // user.newuser = false
-                    // localStorage.setItem('user', JSON.stringify(user));
-                    // localStorage.setItem('business', JSON.stringify(Object.assign({}, businesses, { users: user }))
-                    // )
+                    user.username = username
+                    user.password = encrypted.toString()
+                    user.newuser = false
+                    localStorage.setItem('user', JSON.stringify(user));
+                    localStorage.setItem('business', JSON.stringify(Object.assign({}, businesses, { users: user }))
+                    )
 
-                    // console.log(JSON.parse(localStorage.getItem('user')))
-                    // console.log(JSON.parse(localStorage.getItem('business')))
+                    console.log(JSON.parse(localStorage.getItem('user')))
+                    console.log(JSON.parse(localStorage.getItem('business')))
 
-                    // window.location.reload()
+                    window.location.reload()
                 } else {
                     if (username.length < 6 || username.length > 16) {
                         document.getElementById('alertUsername').style.display = `block`
