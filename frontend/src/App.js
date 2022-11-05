@@ -17,29 +17,11 @@ import TrainModel from './pages/train-model';
 import WindowWarning from "./components/warning/warning";
 // import CustomerFeedback from './pages/customerFeedback';
 //import Navbar from './components/navbar';
-import Cookies from 'js-cookie';
-
-const AuthApi = React.createContext();
-const TokenApi = React.createContext();
 
 export default function App() {
     const [showWarning, setShowWarning] = useState(false)
-    const [auth, setAuth] = useState(false);
-
-    const [token, setToken] = useState("");
-    const readCookie = () => {
-        let token = Cookies.get("token");
-        if (token) {
-            setAuth(true);
-            setToken(token);
-        }
-    }
-
-    const Auth = React.useContext(AuthApi);
 
     useEffect(() => {
-        readCookie();
-
         window.addEventListener('resize', function () {
             if (window.innerWidth < 800) {
                 setShowWarning(true)
@@ -50,33 +32,29 @@ export default function App() {
     }, [])
 
     return (
-        <AuthApi.Provider value={{ auth, setAuth }}>
-            <TokenApi.Provider value={{ token, setToken }}>
-                <Router>
-                    <div className="App">
-                        {/* <Navbar/> */}
-                        <main>
-                            {showWarning ? (<WindowWarning />)
-                                : (
-                                    <Routes>
-                                        <Route path="/" element={<Home />} />
-                                        <Route path="/login" element={<Login />} />
-                                        <Route path="/:businessname" element={<Business />} />
-                                        {/* <Route path="/business" element={<Business />} /> */}
-                                        <Route path="/:businessname/dashboard" element={<Dashboard />} />
-                                        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
-                                        <Route path="/:businessname/analysis" element={<Analysis />} />
-                                        <Route path="/:businessname/prediction" element={<Prediction />} />
-                                        <Route path="/:businessname/train-model" element={<TrainModel />} />
-                                        {/* <Route path="/feedback" element={<CustomerFeedback />} /> */}
-                                        <Route path="/not-supported" element={<NotSupported />} />
-                                        {/* <Route path="*" element={<Home />} /> */}
-                                    </Routes>
-                                )}
-                        </main>
-                    </div>
-                </Router>
-            </TokenApi.Provider>
-        </AuthApi.Provider>
+        <Router>
+            <div className="App">
+                {/* <Navbar/> */}
+                <main>
+                    {showWarning ? (<WindowWarning />)
+                        : (
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/:businessname" element={<Business />} />
+                            {/* <Route path="/business" element={<Business />} /> */}
+                            <Route path="/:businessname/dashboard" element={<Dashboard />} />
+                            {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+                            <Route path="/:businessname/analysis" element={<Analysis />} />
+                            <Route path="/:businessname/prediction" element={<Prediction />} />
+                            <Route path="/:businessname/train-model" element={<TrainModel />} />
+                            {/* <Route path="/feedback" element={<CustomerFeedback />} /> */}
+                            <Route path="/not-supported" element={<NotSupported />} />
+                            {/* <Route path="*" element={<Home />} /> */}
+                        </Routes>
+                        )}
+                </main>
+            </div>
+        </Router>
     );
 }
