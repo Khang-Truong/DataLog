@@ -3,25 +3,28 @@ import MatrixRainingLetters from "../backgrounds/binarybackground"
 import authService from "../../services/auth.service"
 import Business from "../../pages/business"
 import { v4 } from 'uuid'
-import Cookies from 'js-cookie';
+import axios from 'axios';
 
 export default function NewUser() {
     var CryptoJS = require("crypto-js");
 
-    const [data, setData] = useState('');
+    const [user, setUser] = useState('');
 
     useEffect(() => {
-        const currentuser = localStorage.getItem('user');
-        const userObj = JSON.parse(currentuser);
-        console.log(JSON.stringify(userObj.access_token));
-
-        authService.getCurrentUser().then(
-            res => {
-                console.log(res.data)
-                setUser(res.data)
+        const token = localStorage.getItem('token');
+        const tokenObj = JSON.parse(token)
+        axios.get(`http://localhost:8000/api/users/me/`, {
+            headers: {
+                'Authorization': `Bearer ${tokenObj.access_token}`
             }
-        )
-    }, [])
+        }).then((response) => {
+            console.log(response);
+            localStorage.setItem("user", JSON.stringify(response.data));
+            setUser(response.data)
+        }).catch((error) => {
+            console.log(error);
+        });
+    }, []);
 
     const onUsernameChange = (e) => {
         setUsername(e.target.value)
@@ -116,7 +119,7 @@ export default function NewUser() {
                         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                             <h1 style={{ fontSize: '500%' }}>􁏺 </h1>
                             <div style={{ paddingLeft: '1rem' }}>
-                                <h1>Hello, {name}!</h1>
+                                <h1>Hello, {user.firstname}!</h1>
                                 <h2>Looks like you're new here.</h2>
                                 <h2>Please change your given username and password to your preference.</h2>
                             </div>
