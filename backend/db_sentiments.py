@@ -28,4 +28,10 @@ async def fecth_by_range_sentiments(start_date,end_date):
         sentiments.append(document)
     return sentiments
 
+#insert sentiments
+async def create_sentiments(Sentiments):
+    document = Sentiments
+    result = await collection.insert_one(document)
+    return document
+
    

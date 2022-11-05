@@ -78,7 +78,6 @@ def save_model_to_db():
 
 def load_saved_model_from_db(weather_data):
 
-    
     client= 'mongodb+srv://DataLog:DataLog@cluster0.jzr1zc7.mongodb.net/test'
     db = 'DataLog'
     dbconnection='regression_models'
@@ -101,19 +100,17 @@ def load_saved_model_from_db(weather_data):
     pickled_model = json_data[model_name]
 
     linear_fetch = pickle.loads(pickled_model)
-
-   
-
-
     weather_data_df = pd.DataFrame(weather_data, columns=["temp", "temp_min", "temp_max", "dt_txt"])
+
 
     weather_data_df.temp = weather_data_df.temp.apply(lambda x: x[1])
     weather_data_df.temp_min = weather_data_df.temp_min.apply(lambda x: x[1])
     weather_data_df.temp_max = weather_data_df.temp_max.apply(lambda x: x[1])
     weather_data_df.dt_txt = weather_data_df.dt_txt.apply(lambda x: x[1])
 
-    weather_data_df.rename(columns={"temp_max": "Max_Temp_C_", "temp_min":"Min_Temp_C_", "temp": "Temperature", "dt_txt": "Year"}, inplace=True)
+    weather_data_df_orig = weather_data_df.copy()
 
+    weather_data_df.rename(columns={"temp_max": "Max_Temp_C_", "temp_min":"Min_Temp_C_", "temp": "Temperature", "dt_txt": "Year"}, inplace=True)
     weather_data_df["Category_BOH"] =0
     weather_data_df["Category_Bakery"] =0
     weather_data_df["Category_Be Fresh Meals"] =0
@@ -132,15 +129,16 @@ def load_saved_model_from_db(weather_data):
     weather_data_df["Category_Produce"] =0
     weather_data_df["Category_Snacks" ] =0
     weather_data_df["Category_Standard (Do Not Use)"] =0
-
     weather_data_df['Year'] = weather_data_df["Year"].apply(lambda x: x[0:4])
-
   
     weather_data_df= weather_data_df.astype("int32")
 
     prediction = linear_fetch.predict(weather_data_df)
 
-    prediction = pd.DataFrame(prediction, columns=["result"])
+    prediction = pd.DataFrame(prediction, columns=["predicted quantity"])
+    prediction['Category'] = "Category_Dairy"
+
+    prediction['Date'] = weather_data_df_orig.dt_txt
 
     prediction = prediction.to_dict("records")
 
