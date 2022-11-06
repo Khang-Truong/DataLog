@@ -1,10 +1,84 @@
 import Navbar from '../components/navbar';
-import { UserData } from '../TempData/UserData';
 import BarchartFilterDate from '../components/Charts/BarchartFilterDate';
+import Barchart from '../components/Charts/Barchart';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Chart } from 'chart.js';
+import zoomPlugin from 'chartjs-plugin-zoom';
+import Linechart from '../components/Charts/Linechart';
 
 export default function Dashboard() {
-	const initialDate = UserData.map((user) => user.date);
-	const initialDataPoint = UserData.map((data) => data.userGain);
+	const API_URL = 'http://localhost:8000/api/';
+	const [revenueHistoryLabel, setRevenueHistoryLabel] = useState([]);
+	const [revenueHistoryData, setRevenueHistoryData] = useState([]);
+
+	const [revenueForecast, setRevenueForecast] = useState({
+		labels: '',
+		datasets: [],
+	});
+
+	const [quantityForecast, setQuantityForecast] = useState({
+		labels: '',
+		datasets: [],
+	});
+
+	const [weatherForecast, setWeatherForecast] = useState({
+		labels: '',
+		datasets: [],
+	});
+
+	useEffect(() => {
+		axios.get(API_URL + 'revenues').then((res) => {
+			setRevenueHistoryLabel(res.data.map((element) => element.ymd));
+			setRevenueHistoryData(res.data.map((element) => element.dailyRevenue));
+		});
+		axios.get(API_URL + 'revenue_forecast').then((res) => {
+			setRevenueForecast({
+				...revenueForecast,
+				labels: res.data.map((element) => element.Date),
+				datasets: [
+					{
+						label: 'Revenue Forecast',
+						data: res.data.map((element) => element.PredictedRevenue),
+						backgroundColor: 'rgba(54, 162, 235,0.8)',
+						borderColor: 'black',
+						borderWidth: 1,
+					},
+				],
+			});
+		});
+		axios.get(API_URL + 'quantity_forecast').then((res) => {
+			setQuantityForecast({
+				...quantityForecast,
+				labels: res.data.map((element) => element.Date),
+				datasets: [
+					{
+						label: 'Dairy',
+						data: res.data.map((element) => element.predicted_quantity),
+						backgroundColor: '#DAA520',
+						borderColor: '#FFD700',
+					},
+				],
+			});
+		});
+		axios.get(API_URL + 'forecasted_weather').then((res) => {
+			setWeatherForecast({
+				...weatherForecast,
+				labels: res.data.map((element) => element.dt_txt),
+				datasets: [
+					{
+						data: res.data.map((element) => element.temp),
+						backgroundColor: '#FA8072',
+						borderColor: '#800000',
+						tension: 0.4,
+					},
+				],
+			});
+		});
+	}, []);
+
+	Chart.register(zoomPlugin);
+
 	return (
 		<>
 			<Navbar />
@@ -44,8 +118,8 @@ export default function Dashboard() {
 
 					<div style={{ width: 500 }}>
 						<BarchartFilterDate
-							initialDate={initialDate}
-							initialDataPoint={initialDataPoint}
+							initialDate={revenueHistoryLabel}
+							initialDataPoint={revenueHistoryData}
 							label={'Revenue'}
 						/>
 					</div>
@@ -56,6 +130,31 @@ export default function Dashboard() {
 				>
 					<div style={{ paddingLeft: '1rem' }}>
 						<h1>Today's Prediction</h1>
+						<div style={{ width: 500 }}>
+							<Barchart
+								chartData={revenueForecast}
+								displayLegend={false}
+								displayTitle={true}
+								titleText="Revenue Forecast"
+							/>
+						</div>
+						<div style={{ width: 500 }}>
+							<Linechart
+								chartData={quantityForecast}
+								hidden={true}
+								displayTitle={true}
+								titleText="Product Quantity Forecast"
+							/>
+						</div>
+						<div style={{ width: 500 }}>
+							<Linechart
+								chartData={weatherForecast}
+								hidden={true}
+								displayLegend={false}
+								displayTitle={true}
+								titleText="Temperature Forecast"
+							/>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Navbar from '../components/navbar';
 import { Chart } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
@@ -8,6 +9,28 @@ import { AllFactorsData } from '../TempData/RegressionData3';
 import Linechart from '../components/Charts/Linechart';
 
 export default function Prediction() {
+	const API_URL = 'http://localhost:8000/api/';
+	const [weatherForecast, setWeatherForecast] = useState({
+		labels: '',
+		datasets: [],
+	});
+
+	useEffect(() => {
+		axios.get(API_URL + 'forecasted_weather').then((res) => {
+			setWeatherForecast({
+				...weatherForecast,
+				labels: res.data.map((element) => element.dt_txt),
+				datasets: [
+					{
+						data: res.data.map((element) => element.temp),
+						backgroundColor: '#FA8072',
+						borderColor: '#800000',
+						tension: 0.4,
+					},
+				],
+			});
+		});
+	}, []);
 	const [regression, setRegression] = useState({
 		labels: TemperatureData.map((data) => data.date),
 		datasets: [
@@ -42,10 +65,19 @@ export default function Prediction() {
 		<>
 			<Navbar />
 			<div
-				style={{ width: 1000 , paddingLeft:"103px"}}
+				style={{ width: 700, paddingLeft: '103px' }}
 				className={`align-items-center dashboardTemplate`}
 			>
-				<Linechart chartData={regression} />
+				<Linechart chartData={regression} hidden={false} />
+			</div>
+			<div style={{ width: 700, paddingLeft: '103px' }}>
+				<Linechart
+					chartData={weatherForecast}
+					hidden={true}
+					displayLegend={false}
+					displayTitle={true}
+					titleText="Temperature Forecast"
+				/>
 			</div>
 		</>
 	);
