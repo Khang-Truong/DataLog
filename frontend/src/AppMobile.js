@@ -11,7 +11,6 @@ import Navbar from './components/navbar';
 
 export default function AppMobile() {
     return (
-        <Router>
             <div className="App">
                 <Navbar/>
                 <main>
@@ -23,6 +22,5 @@ export default function AppMobile() {
                     </Routes>
                 </main>
             </div>
-        </Router>
     );
 }

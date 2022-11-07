@@ -3,10 +3,8 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import BinaryBackground from '../components/backgrounds/binarybackground'
 import Navbar from '../components/navbar';
 import axios from 'axios';
-import authService from "../services/auth.service";
 
 export default function Business() {
-    var CryptoJS = require("crypto-js");
     let { businessname } = useParams();
     const navigate = useNavigate();
     const [isBusinessReady, setBusinessReady] = useState(false);
@@ -52,8 +50,10 @@ export default function Business() {
                     const url = namecheck.split(' ').join('-')
                     if(response.data.user.newuser){
                         navigate(`/${url}/new-user`,{state:{name:`${location.state.name}`}});
+                        window.location.reload()
                     }else{
                         navigate(`/${url}/dashboard`);
+                        window.location.reload()
                     }
                 })
                 .catch((error) => {

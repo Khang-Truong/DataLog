@@ -30,7 +30,7 @@ export default function Dashboard() {
 	return (
 		<>
 			<div>
-				<Navbar />
+				{/* <Navbar /> */}
 				<div style={{}} className={`d-flex align-items-center dashboardTemplate`}>
 					<div
 						className={`d-flex d-flex justify-content-baseline text-start leftDashboard`}

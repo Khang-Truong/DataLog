@@ -61,7 +61,7 @@ export default function NewUser() {
                                 const url = namecheck.split(' ').join('-')
 
                                 navigate(`/${url}/dashboard`);
-
+                                window.location.reload()
                             })
                     }).catch((error) => {
                         console.log(error);

@@ -67,8 +67,16 @@ module.exports = {
         fallback: {
             fs: false
         }
-    }, 
+    },
     performance: {
         hints: process.env.NODE_ENV === 'production' ? "warning" : false
+    },
+    devServer: {
+        historyApiFallback: true,
+        devMiddleware: {
+            publicPath: '/'
+        },
+        port: 3000,
+        hot: "only"
     }
 };
