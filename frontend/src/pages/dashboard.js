@@ -143,7 +143,7 @@ export default function Dashboard() {
 								chartData={quantityForecast}
 								hidden={true}
 								displayTitle={true}
-								titleText="Product Quantity Forecast"
+								titleText="Category Quantity Forecast"
 							/>
 						</div>
 						<div style={{ width: 500 }}>
