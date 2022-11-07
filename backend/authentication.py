@@ -33,7 +33,7 @@ def get_access_token():
 
 def get_db_names():
     lists = client.list_database_names()
-    return lists
+    return {'names':lists}
 
 
 def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None):
@@ -85,3 +85,18 @@ async def get_current_active_user(current_user: User = Depends(get_current_user)
     if current_user.disabled:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
+
+
+async def update_user_db(username: str, db:str, data: User):
+    mydb = client[db]
+    mycol = mydb["users"]
+    student = mycol.find_one({"username": username})
+    if student:
+        data['password'] = pwd_context.hash(data['password'])
+        updated_student = mycol.update_one(
+            {"username": username}, {"$set": data}
+        )
+        if updated_student:
+            return True
+        return False
+

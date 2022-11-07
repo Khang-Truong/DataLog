@@ -29,11 +29,8 @@ export default function Login(props) {
 
         if (businessName != '') {
             document.getElementById('alertInput').style.display = `none`
-            businesses.map(function (business) {
+            businesses.names.map(function (business) {
                 if (namecheck == business.toLowerCase()) {
-                    // localStorage.setItem('business', JSON.stringify(business));
-                    // console.log(localStorage.getItem('business'))
-
                     const url = namecheck.split(' ').join('-')
                     console.log(businessName)
 

@@ -1,10 +1,11 @@
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import timedelta
+from fastapi.encoders import jsonable_encoder
 
 from models.model import DailyRevenueForecast, Wastage, Sentiments, ProductQuantityForecast, User, UserInDB, Token
 from models.ml_model_regression import save_model_to_db, load_saved_model_from_db
-from authentication import get_db_names, create_access_token, get_current_active_user, get_access_token, client, pwd_context
+from authentication import get_db_names, create_access_token, get_current_active_user, get_access_token,update_user_db, client, pwd_context
 from api_weather import get_weather
 
 from dbs.db_forecast_productquantity import fetch_latest_forecast_quantity
@@ -19,7 +20,6 @@ app = FastAPI()
 
 origins = [
     "http://localhost:3000",
-    'hhtp://localhost'
 ]
 
 # what is a middleware?
@@ -71,7 +71,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     access_token = create_access_token(
         data={'username': user.username, 'db':user.db}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer", "user":user_dict}
 
 @app.get("/api/users/me/", response_model=User)
 async def read_users_me(current_user: User = Depends(get_current_active_user)):
@@ -82,7 +82,19 @@ async def read_users_me(current_user: User = Depends(get_current_active_user)):
 async def read_own_items(current_user: User = Depends(get_current_active_user)):
     return [{"item_id": "Foo", "owner": current_user.username}]
 
+@app.put("/api/users/{username}", response_model=User)
+async def update_user(username: str, db:str, user: User):
+    mydb = client[db]
+    mycol = mydb["users"]
+    cursor = mycol.find({}, {'_id': 0})
+    users = list(cursor)
 
+    updated_user = jsonable_encoder(user)
+    user_found = next((u for u in users if u['username'] == username), {})
+    user_found = updated_user
+
+    updated_user_db = await update_user_db(username, db, updated_user)
+    return user_found
 
 #-------------------------------------------#
 # getting wastages

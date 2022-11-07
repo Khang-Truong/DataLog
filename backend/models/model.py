@@ -6,6 +6,7 @@ from typing import Union
 class Token(BaseModel):
     access_token: str
     token_type: str
+    user: dict
 
 class TokenData(BaseModel):
     username: Union[str, None] = None
@@ -13,7 +14,7 @@ class TokenData(BaseModel):
 
 class User(BaseModel):
     username: str
-    # password: str
+    password: str
     firstname: Union[str, None] = None
     lastname: Union[str, None] = None
     email: Union[str, None] = None

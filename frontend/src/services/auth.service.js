@@ -8,18 +8,30 @@ class AuthService {
         return axios.get(API_URL + '/get-dbs')
     }
 
-    async getCurrentUser() {
+    getCurrentUser() {
         const token = localStorage.getItem('token');
         const tokenObj = JSON.parse(token)
 
         return axios.get(API_URL + `/users/me/`, {
             headers: {
-                'Authorization': `Bearer ${tokenObj.access_token}`
+                'Authorization': `Bearer ${tokenObj}`
             }
         })
     }
 
+    async updateNewUser(username, db, user) {
+        const token = localStorage.getItem('token')
+        const tokenObj = JSON.parse(token)
 
+        return axios.put(API_URL + `/users/${username}`, user, {
+            params: { 
+                'db': db 
+            }, 
+            headers: {
+                'Authorization': `Bearer ${tokenObj}`
+            }
+        })
+    }
 }
 
 export default new AuthService();

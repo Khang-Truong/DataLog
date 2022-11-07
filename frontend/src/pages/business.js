@@ -3,8 +3,10 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import BinaryBackground from '../components/backgrounds/binarybackground'
 import Navbar from '../components/navbar';
 import axios from 'axios';
+import authService from "../services/auth.service";
 
 export default function Business() {
+    var CryptoJS = require("crypto-js");
     let { businessname } = useParams();
     const navigate = useNavigate();
     const [isBusinessReady, setBusinessReady] = useState(false);
@@ -34,9 +36,6 @@ export default function Business() {
 
         if (username != '' && password != '') {
             document.getElementById('alertInput').style.display = `none`
-            console.log(username)
-            console.log(password)
-            console.log(location.state.name)
 
             const fd = new FormData()
             fd.append('username', username)
@@ -47,16 +46,24 @@ export default function Business() {
                 .post("http://127.0.0.1:8000/token", fd)
                 .then((response) => {
                     console.log(response);
-                    // Cookies.set("token", response.data.access_token);
-
-                    localStorage.setItem("token", JSON.stringify(response.data));
+                    localStorage.setItem("token", JSON.stringify(response.data.access_token));
+                    localStorage.setItem('user', JSON.stringify(response.data.user))
                     const namecheck = location.state.name.toLowerCase()
                     const url = namecheck.split(' ').join('-')
-                    console.log(url)
-                    navigate(`/${url}/dashboard`);
+                    if(response.data.user.newuser){
+                        navigate(`/${url}/new-user`,{state:{name:`${location.state.name}`}});
+                    }else{
+                        navigate(`/${url}/dashboard`);
+                    }
                 })
                 .catch((error) => {
-                    console.log(error.message);
+                    if(error.message.includes('400')){
+                        document.getElementById('alertInput').innerText = 'Incorrect password.'
+                        document.getElementById('alertInput').style.display = `block`
+                    } else {
+                        document.getElementById('alertInput').innerText = 'Network Error–No such username.'
+                        document.getElementById('alertInput').style.display = `block`
+                    }
                 });
         } else {
             document.getElementById('alertInput').innerText = 'Please enter your username and password.'

@@ -19,6 +19,7 @@ import WindowWarning from "./components/warning/warning";
 //import Navbar from './components/navbar';
 import SentimentAnalysis from './pages/SentimentAnalysis';
 import Rating from "./pages/Rating";
+import NewUser from "./components/warning/new-user";
 
 export default function App() {
     const [showWarning, setShowWarning] = useState(false)
@@ -51,6 +52,7 @@ export default function App() {
                                 <Route path="/:businessname/train-model" element={<TrainModel />} />
                                 {/* <Route path="/feedback" element={<CustomerFeedback />} /> */}
                                 <Route path="/not-supported" element={<NotSupported />} />
+                                <Route path="/:businessname/new-user" element={<NewUser/>}/>
                                 {/* <Route path="*" element={<Home />} /> */}
                                 <Route path="/form" element={<Rating />} />
                                 <Route path="/feedback" element={<SentimentAnalysis />} />

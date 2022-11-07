@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useEffect } from "react"
 import MatrixRainingLetters from "../backgrounds/binarybackground"
 import authService from "../../services/auth.service"
-import Business from "../../pages/business"
-import { v4 } from 'uuid'
-import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function NewUser() {
-    var CryptoJS = require("crypto-js");
-
+    const navigate = useNavigate();
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
     let [password, setPassword] = useState('')
     let [username, setUsername] = useState('')
@@ -39,27 +37,36 @@ export default function NewUser() {
                     document.getElementById('alertUsername1').style.display = `none`
                     document.getElementById('alertPassword').style.display = `none`
 
-                    let key = v4()
-                    localStorage.setItem('key', JSON.stringify(key));
-
-                    const encrypted = CryptoJS.AES.encrypt(password, key);
-                    console.log(encrypted.toString());
-
-                    key = JSON.parse(localStorage.getItem('key'))
-                    const decrypted = CryptoJS.AES.decrypt(encrypted, key).toString(CryptoJS.enc.Utf8);
-                    console.log(decrypted);
+                    const oldusername = user.username
 
                     user.username = username
-                    user.password = encrypted.toString()
+                    user.password = password
                     user.newuser = false
-                    localStorage.setItem('user', JSON.stringify(user));
-                    localStorage.setItem('business', JSON.stringify(Object.assign({}, businesses, { users: user }))
-                    )
 
-                    console.log(JSON.parse(localStorage.getItem('user')))
-                    console.log(JSON.parse(localStorage.getItem('business')))
+                    console.log(user)
 
-                    window.location.reload()
+                    authService.updateNewUser(oldusername, user.db, user).then((response) => {
+                        const fd = new FormData()
+                        fd.append('username', response.data.username)
+                        fd.append('password', user.password)
+                        fd.append('client_id', response.data.db)
+
+                        axios
+                            .post("http://127.0.0.1:8000/token", fd)
+                            .then((response) => {
+                                console.log(response);
+                                localStorage.setItem("token", JSON.stringify(response.data.access_token));
+                                localStorage.setItem('user', JSON.stringify(response.data.user))
+                                const namecheck = response.data.user.db.toLowerCase()
+                                const url = namecheck.split(' ').join('-')
+
+                                navigate(`/${url}/dashboard`);
+
+                            })
+                    }).catch((error) => {
+                        console.log(error);
+                    });
+
                 } else {
                     if (username.length < 6 || username.length > 16) {
                         document.getElementById('alertUsername').style.display = `block`
@@ -102,7 +109,7 @@ export default function NewUser() {
     }
 
     return (
-        <div>
+        <>
             <div>
                 <div className={`d-flex-row align-items-center`} style={{ zIndex: '99', height: '100vh', width: '100vw' }}>
                     <div style={{ zIndex: '99', position: 'absolute', bottom: '30%', width: '100%', paddingRight: '10%', paddingLeft: '10%' }}>
@@ -157,6 +164,7 @@ export default function NewUser() {
                     </div>
                 </div>
             </div>
-        </div>
+
+        </>
     )
 }
