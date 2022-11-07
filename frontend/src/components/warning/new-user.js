@@ -1,14 +1,25 @@
-import React, { useState, useEffect } from "react"
-import MatrixRainingLetters from "../backgrounds/binarybackground"
+import React, { useState, useEffect,useCallback } from "react"
 import authService from "../../services/auth.service"
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import particlesConfig from '../backgrounds/config/configParticles';
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
 
 export default function NewUser() {
     const navigate = useNavigate();
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
     let [password, setPassword] = useState('')
     let [username, setUsername] = useState('')
+
+    const particlesInit = useCallback(async (engine) => {
+        console.log(engine);
+        await loadFull(engine);
+    }, []);
+
+    const particlesLoaded = useCallback(async (container) => {
+        await console.log(container);
+    }, []);
 
     useEffect(() => {
 
@@ -31,7 +42,7 @@ export default function NewUser() {
         if (username != '' && password != '') {
             document.getElementById('alertInput').style.display = `none`
 
-            if (username != user.username && password != user.password) {
+            if (username != user.username && password != 'asdf1!') {
                 if ((username.length > 5 && username.length < 17) && usernameRegex.test(username) && passwordRegex.test(password)) {
                     document.getElementById('alertUsername').style.display = `none`
                     document.getElementById('alertUsername1').style.display = `none`
@@ -69,6 +80,7 @@ export default function NewUser() {
 
                 } else {
                     if (username.length < 6 || username.length > 16) {
+                        document.getElementById('alertUsername').innerText = 'Minimum and maximum length for username are 6 and 16 characters.'
                         document.getElementById('alertUsername').style.display = `block`
                     } else {
                         document.getElementById('alertUsername').style.display = `none`
@@ -87,7 +99,7 @@ export default function NewUser() {
                     }
                 }
             } else {
-                if (password == user.password) {
+                if (password == 'asdf1!') {
                     document.getElementById('alertPassword').innerText = 'Your new password cannot be the same as your current one.'
                     document.getElementById('alertPassword').style.display = `block`
                 } else {
@@ -159,8 +171,8 @@ export default function NewUser() {
                             </form>
                         </div>
                     </div>
-                    <div style={{ filter: 'blur(10px)' }}>
-                        <MatrixRainingLetters loading='lazy' />
+                    <div style={{ width: '100vw', height: '100vh', position: 'absolute', filter: 'blur(10px)' }}>
+                        <Particles id="tsparticles" init={particlesInit} loaded={particlesLoaded} options={particlesConfig} loading='lazy' />
                     </div>
                 </div>
             </div>

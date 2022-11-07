@@ -46,9 +46,7 @@ export default function App() {
                                     <Route path="/" element={<Home />} />
                                     <Route path="/login" element={<Login />} />
                                     <Route path="/:businessname" element={<Business />} />
-                                    {/* <Route path="/business" element={<Business />} /> */}
                                     <Route path="/:businessname/dashboard" element={<Dashboard />} />
-                                    {/* <Route path="/dashboard" element={<Dashboard />} /> */}
                                     <Route path="/:businessname/analysis" element={<Analysis />} />
                                     <Route path="/:businessname/prediction" element={<Prediction />} />
                                     <Route path="/:businessname/train-model" element={<TrainModel />} />

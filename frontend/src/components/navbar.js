@@ -75,7 +75,7 @@ function Navbar() {
             {showNavbar ? (
                 <div className={`dlNavbar d-flex justify-content-between`} style={{ zIndex: '2' }}>
                     <div className={`d-flex align-items-center justify-content-between`}>
-                        <div style={{ textDecoration: 'none', color: 'black', marginTop: '0.3rem' }} onClick={() => {
+                        <div style={{ textDecoration: 'none', color: 'black', marginTop: '0.3rem' , cursor:'pointer'}} onClick={() => {
                             navigate('/')
                             window.location.reload()
                         }}>
