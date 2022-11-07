@@ -7,7 +7,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Gaugechart = () => {
-	const [gaugeData, setGaugeData] = useState(0.3);
+	const [gaugeData, setGaugeData] = useState(0);
 	const [name, setName]=useState('Employee name');
 	const handleClick = (index) => {
 		setGaugeData(GaugeData[index].transactionSpeed);
