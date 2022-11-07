@@ -8,8 +8,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Gaugechart = () => {
 	const [gaugeData, setGaugeData] = useState(0.3);
+	const [name, setName]=useState('Employee name');
 	const handleClick = (index) => {
 		setGaugeData(GaugeData[index].transactionSpeed);
+		setName(GaugeData[index].employeeName);
 	};
 	return (
 		<>
@@ -21,7 +23,7 @@ const Gaugechart = () => {
 				percent={gaugeData}
 				textColor={'#000000'}
 			/>
-			<DropdownButton id="dropdown-item-button" title="Employee name">
+			<DropdownButton id="dropdown-item-button" title={name}>
 				{GaugeData.map((element, index) => (
 					<Dropdown.Item as="button" onClick={() => handleClick(index)}>
 						{element.employeeName}
