@@ -40,54 +40,55 @@ export default function Dashboard() {
 			navigate('/')
 		} else {
 			setNewUser(user.newuser)
+			axios.get(API_URL + 'revenues').then((res) => {
+				setRevenueHistoryLabel(res.data.map((element) => element.ymd));
+				setRevenueHistoryData(res.data.map((element) => element.dailyRevenue));
+			});
+			axios.get(API_URL + 'revenue_forecast').then((res) => {
+				setRevenueForecast({
+					...revenueForecast,
+					labels: res.data.map((element) => element.Date),
+					datasets: [
+						{
+							label: 'Revenue Forecast',
+							data: res.data.map((element) => element.PredictedRevenue),
+							backgroundColor: 'rgba(54, 162, 235,0.8)',
+							borderColor: 'black',
+							borderWidth: 1,
+						},
+					],
+				});
+			});
+			axios.get(API_URL + 'quantity_forecast').then((res) => {
+				setQuantityForecast({
+					...quantityForecast,
+					labels: res.data.map((element) => element.Date),
+					datasets: [
+						{
+							label: 'Dairy',
+							data: res.data.map((element) => element.predicted_quantity),
+							backgroundColor: '#DAA520',
+							borderColor: '#FFD700',
+						},
+					],
+				});
+			});
+			axios.get(API_URL + 'forecasted_weather').then((res) => {
+				setWeatherForecast({
+					...weatherForecast,
+					labels: res.data.map((element) => element.dt_txt),
+					datasets: [
+						{
+							data: res.data.map((element) => element.temp),
+							backgroundColor: '#FA8072',
+							borderColor: '#800000',
+							tension: 0.4,
+						},
+					],
+				});
+			});
 		}
-		axios.get(API_URL + 'revenues').then((res) => {
-			setRevenueHistoryLabel(res.data.map((element) => element.ymd));
-			setRevenueHistoryData(res.data.map((element) => element.dailyRevenue));
-		});
-		axios.get(API_URL + 'revenue_forecast').then((res) => {
-			setRevenueForecast({
-				...revenueForecast,
-				labels: res.data.map((element) => element.Date),
-				datasets: [
-					{
-						label: 'Revenue Forecast',
-						data: res.data.map((element) => element.PredictedRevenue),
-						backgroundColor: 'rgba(54, 162, 235,0.8)',
-						borderColor: 'black',
-						borderWidth: 1,
-					},
-				],
-			});
-		});
-		axios.get(API_URL + 'quantity_forecast').then((res) => {
-			setQuantityForecast({
-				...quantityForecast,
-				labels: res.data.map((element) => element.Date),
-				datasets: [
-					{
-						label: 'Dairy',
-						data: res.data.map((element) => element.predicted_quantity),
-						backgroundColor: '#DAA520',
-						borderColor: '#FFD700',
-					},
-				],
-			});
-		});
-		axios.get(API_URL + 'forecasted_weather').then((res) => {
-			setWeatherForecast({
-				...weatherForecast,
-				labels: res.data.map((element) => element.dt_txt),
-				datasets: [
-					{
-						data: res.data.map((element) => element.temp),
-						backgroundColor: '#FA8072',
-						borderColor: '#800000',
-						tension: 0.4,
-					},
-				],
-			});
-		});
+		
 	}, []);
 
 	Chart.register(zoomPlugin);
@@ -106,7 +107,7 @@ export default function Dashboard() {
 					>
 						<h1>Overview</h1>
 						<h6 style={{ marginTop: '5px', marginLeft: '1px' }}>
-							Good morning, John! 👋
+							Good morning, {`${user.firstname}`}! 👋
 						</h6>
 						<div
 							style={{

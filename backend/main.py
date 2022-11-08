@@ -19,10 +19,7 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000",
-    "http://localhost:4000",
-    'http://192.168.100.171:3000'
-
+    "http://localhost:3000"
 ]
 
 # what is a middleware?
@@ -166,10 +163,17 @@ async def get_revenue_by_range(start_date: str, end_date: str):
 
 
 @app.get("/api/quantity_forecast")
-async def get_quantity_forecast():
-    response = await  fetch_latest_forecast_quantity()
-    return response
+async def put_model():
+    response = load_saved_model_from_db(get_weather())
+    if response:
+        return response
+    raise HTTPException(400, f"Something went wrong")
 
+
+@app.get("/api/revenue_forecast")
+async def get_revenue_forecast():
+    response = await fetch_latest_forecast_revenues()
+    return response
 
 #-------------------------------------------#
 # weather api
