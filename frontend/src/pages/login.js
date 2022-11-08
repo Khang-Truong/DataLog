@@ -48,7 +48,7 @@ export default function Login(props) {
 
     return (
         <>
-            {/* <Navbar /> */}
+            <Navbar />
             <div style={{ width: '100vw', height: '100vh' }} className={`d-flex align-items-center`}>
                 <div style={{ width: '100vw' }}>
                     <div className="col-md-12 text-center" style={{ padding: '1rem 5rem', display: 'flex', justifyContent: 'center' }}>

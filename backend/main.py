@@ -79,11 +79,6 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 async def read_users_me(current_user: User = Depends(get_current_active_user)):
     return current_user
 
-
-@app.get("/api/users/me/items/")
-async def read_own_items(current_user: User = Depends(get_current_active_user)):
-    return [{"item_id": "Foo", "owner": current_user.username}]
-
 @app.put("/api/users/{username}", response_model=User)
 async def update_user(username: str, db:str, user: User):
     mydb = client[db]

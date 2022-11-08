@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-    BrowserRouter as Router,
     Routes,
     Route
 } from "react-router-dom";
@@ -16,7 +15,7 @@ import Prediction from './pages/prediction';
 import TrainModel from './pages/train-model';
 import WindowWarning from "./components/warning/warning";
 // import CustomerFeedback from './pages/customerFeedback';
-import Navbar from './components/navbar';
+// import Navbar from './components/navbar';
 import SentimentAnalysis from './pages/SentimentAnalysis';
 import Rating from "./pages/Rating";
 import NewUser from "./components/warning/new-user";
@@ -25,8 +24,6 @@ export default function App() {
     const [showWarning, setShowWarning] = useState(false)
 
     useEffect(() => {
-
-
         window.addEventListener('resize', function () {
             if (window.innerWidth < 800) {
                 setShowWarning(true)
@@ -41,7 +38,8 @@ export default function App() {
                 <main>
                     {showWarning ? (<WindowWarning />)
                         : (
-                            <><Navbar />
+                            <>
+                            {/* <Navbar /> */}
                                 <Routes>
                                     <Route path="/" element={<Home />} />
                                     <Route path="/login" element={<Login />} />

@@ -1,10 +1,11 @@
-import React, { useState, useEffect,useCallback } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import authService from "../../services/auth.service"
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import particlesConfig from '../backgrounds/config/configParticles';
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
+import Navbar from "../navbar";
 
 export default function NewUser() {
     const navigate = useNavigate();
@@ -123,6 +124,7 @@ export default function NewUser() {
     return (
         <>
             <div>
+                <Navbar />
                 <div className={`d-flex-row align-items-center`} style={{ zIndex: '99', height: '100vh', width: '100vw' }}>
                     <div style={{ zIndex: '99', position: 'absolute', bottom: '30%', width: '100%', paddingRight: '10%', paddingLeft: '10%' }}>
                         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>

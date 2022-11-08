@@ -3,6 +3,7 @@ import particlesConfig from '../components/backgrounds/config/configParticles';
 import { useCallback } from "react";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
+import Navbar from "../components/navbar";
 
 export default function Home() {
 
@@ -17,6 +18,7 @@ export default function Home() {
 
     return (
         <div>
+            <Navbar />
             <div style={{ width: '100vw', height: '100vh' }} className={`d-flex align-items-center`}>
                 <div style={{ width: '100vw', height: '100vh', position: 'absolute', zIndex: '-1' }}>
                     <Particles id="tsparticles" init={particlesInit} loaded={particlesLoaded} options={particlesConfig} loading='lazy' />

@@ -1,12 +1,8 @@
 import Navbar from '../components/navbar';
 import { UserData } from '../TempData/UserData';
 import BarchartFilterDate from '../components/Charts/BarchartFilterDate';
-import NewUser from '../components/warning/new-user';
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import authService from '../services/auth.service';
-import axios from 'axios';
-
 
 export default function Dashboard() {
 	let { businessname } = useParams();
@@ -30,7 +26,7 @@ export default function Dashboard() {
 	return (
 		<>
 			<div>
-				{/* <Navbar /> */}
+				<Navbar />
 				<div style={{}} className={`d-flex align-items-center dashboardTemplate`}>
 					<div
 						className={`d-flex d-flex justify-content-baseline text-start leftDashboard`}

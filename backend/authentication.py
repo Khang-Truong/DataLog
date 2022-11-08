@@ -10,9 +10,7 @@ from models.model import TokenData, UserInDB, User
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-
-client = pymongo.MongoClient(
-    'mongodb+srv://DataLog:DataLog@cluster0.jzr1zc7.mongodb.net/')
+client = pymongo.MongoClient('mongodb+srv://DataLog:DataLog@cluster0.jzr1zc7.mongodb.net/')
 
 auth_db = client['authentication']
 auth_col = auth_db['authentication']
@@ -23,18 +21,15 @@ auth_lists = auth_lists[0]
 def get_secret_key():
     return auth_lists.get('SECRET_KEY')
 
-
 def get_algorithm():
     return auth_lists.get('ALGORITHM')
 
 def get_access_token():
     return auth_lists.get('ACCESS_TOKEN_EXPIRE_MINUTES')
 
-
 def get_db_names():
     lists = client.list_database_names()
     return {'names':lists}
-
 
 def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None):
     SECRET_KEY = get_secret_key()
@@ -47,7 +42,6 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
-
 
 async def get_current_user(token: str = Depends(oauth2_scheme)):
     SECRET_KEY = get_secret_key()
@@ -85,7 +79,6 @@ async def get_current_active_user(current_user: User = Depends(get_current_user)
     if current_user.disabled:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
-
 
 async def update_user_db(username: str, db:str, data: User):
     mydb = client[db]
