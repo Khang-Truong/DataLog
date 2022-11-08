@@ -2,64 +2,24 @@ import { v4 } from 'uuid'
 
 export const UserData = [
 	{
-		id: 1,
-		date: '2022-08-21',
-		userGain: 82600,
-		userLost: 823,
+		Date: '2022-10-23',
+		PredictedRevenue: 3456,
+		Flag_latest: '1',
 	},
 	{
-		id: 2,
-		date: '2022-08-22',
-		userGain: 45627,
-		userLost: 345,
+		Date: '2022-10-24',
+		PredictedRevenue: 3330,
+		Flag_latest: '1',
 	},
 	{
-		id: 3,
-		date: '2022-08-23',
-		userGain: 78568,
-		userLost: 555,
+		Date: '2022-10-25',
+		PredictedRevenue: 3456,
+		Flag_latest: '1',
 	},
 	{
-		id: 4,
-		date: '2022-08-24',
-		userGain: 93400,
-		userLost: 4855,
-	},
-	{
-		id: 5,
-		date: '2022-08-25',
-		userGain: 4300,
-		userLost: 234,
-	},
-	{
-		id: 6,
-		date: '2022-08-26',
-		userGain: 87000,
-		userLost: 1823,
-	},
-	{
-		id: 7,
-		date: '2022-08-27',
-		userGain: 42677,
-		userLost: 2345,
-	},
-	{
-		id: 8,
-		date: '2022-08-28',
-		userGain: 24588,
-		userLost: 555,
-	},
-	{
-		id: 9,
-		date: '2022-08-29',
-		userGain: 74000,
-		userLost: 4555,
-	},
-	{
-		id: 10,
-		date: '2022-08-30',
-		userGain: 4300,
-		userLost: 234,
+		Date: '2022-10-27',
+		PredictedRevenue: 3000,
+		Flag_latest: '1',
 	},
 ];
 
