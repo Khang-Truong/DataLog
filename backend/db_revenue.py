@@ -11,7 +11,8 @@ collection = database.Revenue
 #fetch all revenues
 async def fetch_all_revenue():
     sentiments = []
-    cursor = collection.find({})
+    # cursor = collection.find({})
+    cursor = collection.find({'ymd': { "$gte": "2019-01-01", "$lte": "2019-01-31"}}) 
     async for document in cursor:
         sentiments.append(Revenue(**document))
     return sentiments
