@@ -56,7 +56,7 @@ function Navbar() {
                 const lastinitial = Array.from(response.data.lastname)[0];
                 setInitials(firstinitial + lastinitial)
             }).catch((error) => {
-                logOut()
+                // logOut()
             });
         }
 
