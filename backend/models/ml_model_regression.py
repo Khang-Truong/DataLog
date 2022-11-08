@@ -133,7 +133,7 @@ def load_saved_model_from_db(weather_data):
 
     prediction = linear_fetch.predict(weather_data_df)
 
-    prediction = pd.DataFrame(prediction, columns=["predicted quantity"])
+    prediction = pd.DataFrame(prediction, columns=["predicted_quantity"])
     prediction['Category'] = "Category_Dairy"
 
     prediction['Date'] = weather_data_df_orig.dt_txt
