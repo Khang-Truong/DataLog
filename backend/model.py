@@ -49,4 +49,8 @@ class WeatherForecast(BaseModel):
 class ML_Model(BaseModel):
     myxgb: object
     name: str
-    
+
+
+class RevenueMaxDate(BaseModel):
+    ymd: str
+    revenue: int
