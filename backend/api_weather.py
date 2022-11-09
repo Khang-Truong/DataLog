@@ -20,8 +20,8 @@ def get_weather():
 
         temp = 0
         temp_array = []
-        temp_max = response[0]["main"]["temp_max"] - 273.15
-        temp_min = response[0]["main"]["temp_min"] - 273.15
+        temp_max = response[counter_start]["main"]["temp_max"] - 273.15
+        temp_min = response[counter_start]["main"]["temp_min"] - 273.15
         dt = ""
         response_raw =response[0]["main"]
         
@@ -54,17 +54,7 @@ def get_weather():
         counter_end +=7
 
     
-
-    # for x in range(3,40,8):
-    #     response_raw = response[x]["main"]
-    #     response_raw["dt_txt"] = response[x]["dt_txt"][0:10]
-    #     #converting temperature from kelvin to celsius
-    #     response_raw["temp"] = response_raw["temp"] - 273.15
-    #     response_raw["temp_min"] = response_raw["temp_min"] - 273.15
-    #     response_raw["temp_max"] = response_raw["temp_max"] - 273.15
-    #     response_list.append(WeatherForecast(**response_raw))
-
     return response_list
-    # return response_raw
+    
 
     
