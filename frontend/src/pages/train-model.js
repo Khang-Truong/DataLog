@@ -1,11 +1,22 @@
 import Navbar from '../components/navbar';
 import { useNavigate, useParams } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
 
 export default function TrainModel() {
-	let { businessname } = useParams();
-	let file
+	let params = useParams();
+	let file, user
 	let reader = new FileReader(); //this for convert to Base64
-    const navigate = useNavigate()
+	const navigate = useNavigate()
+
+	useEffect(() => {
+		if ('user' in localStorage) {
+			user = JSON.parse(localStorage.getItem('user'))
+			if (params.businessname != user.db.toLowerCase()) {
+				sessionStorage.setItem('url', params.businessname)
+				navigate('/badpage')
+			}
+		}
+	}, [])
 
 	function choosefile(e) {
 		file = e.target.files[0]; //the file
@@ -46,7 +57,7 @@ export default function TrainModel() {
 	}
 
 	return (
-		<div>
+		<>
 			<Navbar />
 			<div style={{ paddingRight: '4rem', paddingLeft: '8rem', paddingTop: '2rem', paddingBottom: '2rem', height: '100vh' }} className={`dashboardTemplate`}>
 				{/* <h1>Which model do you want to train?</h1> */}
@@ -106,6 +117,6 @@ export default function TrainModel() {
 				</div>
 
 			</div>
-		</div>
+		</>
 	);
 }

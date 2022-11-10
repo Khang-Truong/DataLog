@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import authService from "./auth.service";
 import { useNavigate, Link, useMatch, useParams } from 'react-router-dom'
+import React from 'react';
 
 export default function AuthHeader() {
     const islogin = useMatch('/login')
@@ -30,18 +31,21 @@ export default function AuthHeader() {
 
             if (isanalysis || isprofile || isdashboard || istrainmodel || isprediction || isfeedback) {
                 authService.getCurrentUser().then((response) => {
-                    if (response.status != 200) {
+                    if (response.status == 200) {
+                        console.log(response.status)
+                    }
+                }).catch((error) => {
+                    if (error.message.includes('401')) {
                         alert('Your session has expired')
                         if (confirm('Do you want to log in again?')) {
                             localStorage.clear()
                             sessionStorage.clear()
                             navigate('/login')
-                            window.location.reload()
+
                         } else {
                             localStorage.clear()
                             sessionStorage.clear()
                             navigate('/')
-                            window.location.reload()
                         }
                     }
                 })

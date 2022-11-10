@@ -50,7 +50,7 @@ export default function URLwarning() {
                                                 navigate(`/${user.db.toLowerCase()}/dashboard`)
                                             }}>
                                             <label htmlFor="goToDashboard" style={{ width: '100%', cursor: 'pointer' }}>
-                                                Go Back
+                                                Go to Dashboard
                                             </label>
                                         </button>
                                         <div style={{ padding: '1rem' }}></div>

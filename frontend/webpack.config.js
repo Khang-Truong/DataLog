@@ -5,7 +5,7 @@ var mode = process.env.NODE_ENV || 'development';
 
 module.exports = {
     plugins: [new MiniCssExtractPlugin({
-        filename: './src/build/styles.css'
+        filename: './build/styles.css'
     })],
     entry: './src/index.js',
     devtool: (mode === 'development') ? 'inline-source-map' : false,
@@ -13,7 +13,7 @@ module.exports = {
     cache: true,
     output: {
         path: __dirname,
-        filename: './src/build/bundle.js'
+        filename: './build/bundle.js'
     },
     module: {
         rules: [
@@ -74,7 +74,7 @@ module.exports = {
     devServer: {
         historyApiFallback: true,
         devMiddleware: {
-            publicPath: '/'
+            publicPath: './'
         },
         port: 3000,
         hot: "only"

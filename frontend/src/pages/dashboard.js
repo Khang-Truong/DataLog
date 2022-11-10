@@ -12,7 +12,7 @@ export default function Dashboard() {
 	const params = useParams();
 
 	const [newUser, setNewUser] = useState(false)
-	const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
+	let user = []
 
 	const navigate = useNavigate()
 
@@ -36,65 +36,69 @@ export default function Dashboard() {
 	});
 
 	useEffect(() => {
-		if(params.businessname != user.db.toLowerCase()){
-			sessionStorage.setItem('url', params.businessname)
-			navigate('/badpage')
-		} else{
-			if ('user' in localStorage && (params.businessname == user.db.toLowerCase())) {
-				sessionStorage.clear()
-				setNewUser(user.newuser)
-				axios.get(API_URL + 'revenues').then((res) => {
-					setRevenueHistoryLabel(res.data.map((element) => element.ymd));
-					setRevenueHistoryData(res.data.map((element) => element.dailyRevenue));
-				});
-				axios.get(API_URL + 'revenue_forecast').then((res) => {
-					setRevenueForecast({
-						...revenueForecast,
-						labels: res.data.map((element) => element.Date),
-						datasets: [
-							{
-								label: 'Revenue Forecast',
-								data: res.data.map((element) => element.PredictedRevenue),
-								backgroundColor: 'rgba(54, 162, 235,0.8)',
-								borderColor: 'black',
-								borderWidth: 1,
-							},
-						],
-					});
-				});
-				axios.get(API_URL + 'quantity_forecast').then((res) => {
-					setQuantityForecast({
-						...quantityForecast,
-						labels: res.data.map((element) => element.Date),
-						datasets: [
-							{
-								label: 'Dairy',
-								data: res.data.map((element) => element.predicted_quantity),
-								backgroundColor: '#DAA520',
-								borderColor: '#FFD700',
-							},
-						],
-					});
-				});
-				axios.get(API_URL + 'forecasted_weather').then((res) => {
-					setWeatherForecast({
-						...weatherForecast,
-						labels: res.data.map((element) => element.dt_txt),
-						datasets: [
-							{
-								data: res.data.map((element) => element.temp),
-								backgroundColor: '#FA8072',
-								borderColor: '#800000',
-								tension: 0.4,
-							},
-						],
-					});
-				});
+		if ('user' in localStorage) {
+			user = JSON.parse(localStorage.getItem('user'))
+			if (params.businessname != user.db.toLowerCase()) {
+				sessionStorage.setItem('url', params.businessname)
+				navigate('/badpage')
 			} else {
-				navigate('/')
-				window.location.reload()
+				if ('user' in localStorage && (params.businessname == user.db.toLowerCase())) {
+					sessionStorage.clear()
+					setNewUser(user.newuser)
+					axios.get(API_URL + 'revenues').then((res) => {
+						setRevenueHistoryLabel(res.data.map((element) => element.ymd));
+						setRevenueHistoryData(res.data.map((element) => element.dailyRevenue));
+					});
+					axios.get(API_URL + 'revenue_forecast').then((res) => {
+						setRevenueForecast({
+							...revenueForecast,
+							labels: res.data.map((element) => element.Date),
+							datasets: [
+								{
+									label: 'Revenue Forecast',
+									data: res.data.map((element) => element.PredictedRevenue),
+									backgroundColor: 'rgba(54, 162, 235,0.8)',
+									borderColor: 'black',
+									borderWidth: 1,
+								},
+							],
+						});
+					});
+					axios.get(API_URL + 'quantity_forecast').then((res) => {
+						setQuantityForecast({
+							...quantityForecast,
+							labels: res.data.map((element) => element.Date),
+							datasets: [
+								{
+									label: 'Dairy',
+									data: res.data.map((element) => element.predicted_quantity),
+									backgroundColor: '#DAA520',
+									borderColor: '#FFD700',
+								},
+							],
+						});
+					});
+					axios.get(API_URL + 'forecasted_weather').then((res) => {
+						setWeatherForecast({
+							...weatherForecast,
+							labels: res.data.map((element) => element.dt_txt),
+							datasets: [
+								{
+									data: res.data.map((element) => element.temp),
+									backgroundColor: '#FA8072',
+									borderColor: '#800000',
+									tension: 0.4,
+								},
+							],
+						});
+					});
+				}
 			}
+		} else {
+			navigate('/')
+			window.location.reload()
 		}
+
 
 	}, []);
 
