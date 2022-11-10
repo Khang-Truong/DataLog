@@ -29,6 +29,9 @@ def get_access_token():
 
 def get_db_names():
     lists = client.list_database_names()
+    lists.remove('admin')
+    lists.remove('authentication')
+    lists.remove('local')
     return {'names':lists}
 
 def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None):
