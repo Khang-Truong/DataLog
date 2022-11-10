@@ -7,7 +7,7 @@ function Navbar() {
     const [showLoginBtn, setShowLoginBtn] = useState(false);
     const [showNavbar, setShowNavbar] = useState(true);
     const [initials, setInitials] = useState('')
-    const [user, setUser] = useState('')
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
     const [url, setUrl] = useState('')
     const navigate = useNavigate()
     const isHome = useMatch('/')
@@ -25,13 +25,14 @@ function Navbar() {
     const logOut = () => {
         localStorage.removeItem('token')
         localStorage.removeItem('user')
+        localStorage.removeItem('isLoggedIn')
         navigate('/')
         window.location.reload()
     }
 
     useEffect(() => {
         if ((isHome || isHome2)
-            && !(navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i))) {
+            && !(navigator.userAgent.match(/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i))) {
             setShowLoginBtn(true)
         } else {
             setShowLoginBtn(false);
@@ -44,20 +45,14 @@ function Navbar() {
         if (isanalysis || isprofile || isdashboard || istrainmodel || isprediction || isfeedback) {
             setShowNavbar(false)
 
-            authService.getCurrentUser().then((response) => {
-                console.log(response.data);
-                localStorage.setItem("user", JSON.stringify(response.data));
-                setUser(response.data)
-
-                const namecheck = response.data.db.toLowerCase()
-                setUrl(namecheck.split(' ').join('-'))
-
-                const firstinitial = Array.from(response.data.firstname)[0];
-                const lastinitial = Array.from(response.data.lastname)[0];
+            if ('user' in localStorage) {
+                setUrl(user.db.toLowerCase())
+                const firstinitial = Array.from(user.firstname)[0];
+                const lastinitial = Array.from(user.lastname)[0];
                 setInitials(firstinitial + lastinitial)
-            }).catch((error) => {
-                // logOut()
-            });
+            } else {
+                logOut()
+            }
         }
 
         eventBus.on('logout', () => {
@@ -75,7 +70,7 @@ function Navbar() {
             {showNavbar ? (
                 <div className={`dlNavbar d-flex justify-content-between`} style={{ zIndex: '2' }}>
                     <div className={`d-flex align-items-center justify-content-between`}>
-                        <div style={{ textDecoration: 'none', color: 'black', marginTop: '0.3rem' , cursor:'pointer'}} onClick={() => {
+                        <div style={{ textDecoration: 'none', color: 'black', marginTop: '0.3rem', cursor: 'pointer' }} onClick={() => {
                             navigate('/')
                             window.location.reload()
                         }}>
@@ -98,7 +93,7 @@ function Navbar() {
                     <div className={`d-flex justify-content-between text-start`} style={{ flexDirection: 'column' }}>
                         <div onClick={() => {
                             // navigate('/profile')
-                        }} style={{ textDecoration: 'none', color: 'black', cursor:'pointer' }}>
+                        }} style={{ textDecoration: 'none', color: 'black', cursor: 'pointer' }}>
                             <div style={{ flexDirection: 'row', marginLeft: '0.2rem' }} className={`d-flex align-items-center`}>
                                 <p data-letters={initials}></p>
                                 <h6 style={{ marginLeft: '1.6rem' }}>{`${user.firstname} ${user.lastname}`}</h6>
@@ -106,7 +101,7 @@ function Navbar() {
                         </div>
                         <div onClick={() => {
                             navigate(`/${url}/dashboard`)
-                        }} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem', cursor:'pointer' }}>
+                        }} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem', cursor: 'pointer' }}>
                             <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
                                 {isdashboard ? (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀦳</h2>) : (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀦲</h2>)}
                                 <h6 style={{ marginLeft: '1.6rem' }}>Dashboard</h6>
@@ -114,7 +109,7 @@ function Navbar() {
                         </div>
                         <div onClick={() => {
                             navigate(`/${url}/prediction`)
-                        }} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem' , cursor:'pointer'}}>
+                        }} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem', cursor: 'pointer' }}>
                             <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
                                 {isprediction ? (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀜍</h2>) : (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀜎</h2>)}
                                 <h6 style={{ marginLeft: '1.6rem' }}>Prediction</h6>
@@ -122,7 +117,7 @@ function Navbar() {
                         </div>
                         <div onClick={() => {
                             navigate(`/${url}/analysis`)
-                        }} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem' , cursor:'pointer'}}>
+                        }} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem', cursor: 'pointer' }}>
                             <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
                                 {isanalysis ? (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀦌</h2>) : (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀥜</h2>)}
                                 <h6 style={{ marginLeft: '1.6rem' }}>&nbsp;&nbsp;Analysis</h6>
@@ -130,7 +125,7 @@ function Navbar() {
                         </div>
                         <div onClick={() => {
                             navigate(`/${url}/train-model`)
-                        }} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem', cursor:'pointer' }}>
+                        }} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem', cursor: 'pointer' }}>
                             <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
                                 {istrainmodel ? (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀧓</h2>) : (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀫥</h2>)}
                                 <h6 style={{ marginLeft: '1.6rem' }}>Train Model</h6>
@@ -138,14 +133,14 @@ function Navbar() {
                         </div>
                         <div onClick={() => {
                             // navigate('/profile')
-                        }} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem' , cursor:'pointer'}}>
+                        }} style={{ textDecoration: 'none', color: 'black', marginTop: '1.5rem', cursor: 'pointer' }}>
                             <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
                                 {isfeedback ? (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀿌</h2>) : (<h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀿋</h2>)}
                                 <h6 style={{ marginLeft: '1.6rem', marginRight: '1rem' }}>Customer Feedback</h6>
                             </div>
                         </div>
                     </div>
-                    <div style={{ position: 'absolute', bottom: 0, marginTop: '1.5rem',marginBottom:'1.5rem',cursor:'pointer' }}>
+                    <div style={{ position: 'absolute', bottom: 0, marginTop: '1.5rem', marginBottom: '1.5rem', cursor: 'pointer' }}>
                         <div onClick={logOut} style={{ textDecoration: 'none', color: 'black' }}>
                             <div style={{ flexDirection: 'row' }} className={`d-flex align-items-center`}>
                                 <h2 style={{ margin: '0', marginLeft: '0.3rem' }}>􀆧</h2>

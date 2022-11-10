@@ -5,7 +5,7 @@ import Navbar from '../components/navbar';
 import axios from 'axios';
 
 export default function Business() {
-    let { businessname } = useParams();
+    const params = useParams();
     const navigate = useNavigate();
     const [isBusinessReady, setBusinessReady] = useState(false);
     const [username, setUsername] = useState('')
@@ -22,7 +22,7 @@ export default function Business() {
     }
 
     useEffect(() => {
-        if (location.state.name != '') {
+        if ('name' in sessionStorage && (sessionStorage.getItem('name').toLowerCase() == params.businessname)) {
             setBusinessReady(true)
         } else {
             navigate('/login')
@@ -38,7 +38,7 @@ export default function Business() {
             const fd = new FormData()
             fd.append('username', username)
             fd.append('password', password)
-            fd.append('client_id', location.state.name)
+            fd.append('client_id', sessionStorage.getItem('name'))
 
             axios
                 .post("http://127.0.0.1:8000/token", fd)
@@ -46,12 +46,13 @@ export default function Business() {
                     console.log(response);
                     localStorage.setItem("token", JSON.stringify(response.data.access_token));
                     localStorage.setItem('user', JSON.stringify(response.data.user))
-                    const namecheck = location.state.name.toLowerCase()
-                    const url = namecheck.split(' ').join('-')
+                    const url = sessionStorage.getItem('name').toLowerCase()
+                    
                     if(response.data.user.newuser){
-                        navigate(`/${url}/new-user`,{state:{name:`${location.state.name}`}});
+                        navigate(`/${url}/new-user`,{state:{name:`${sessionStorage.getItem('name')}`}});
                         window.location.reload()
                     }else{
+                        sessionStorage.removeItem('name')
                         navigate(`/${url}/dashboard`);
                         window.location.reload()
                     }
@@ -80,7 +81,7 @@ export default function Business() {
                         <div style={{ width: '100vw' }}>
                             <div className="col-md-12" style={{ padding: '1rem 5rem', display: 'flex', justifyContent: 'center' }}>
                                 <div className={`card card-container`} id={`cardBackground`}>
-                                    <h1 className="text-center">{`${location.state.name}`} Customer Login</h1>
+                                    <h1 className="text-center">{`${sessionStorage.getItem('name')}`} Customer Login</h1>
                                     <form className="row g-3" style={{ marginTop: '0.5rem' }} onSubmit={continueLogin}>
                                         <h6 id='alertInput' style={{ display: 'none', color: 'red', paddingTop: '0' }}>Please enter your username and password.</h6>
                                         <div className="col-12">

@@ -25,15 +25,16 @@ export default function Login(props) {
     function continueLogin(e) {
         e.preventDefault();
 
-        const namecheck = businessName.toLowerCase()
+        const url = businessName.toLowerCase()
 
         if (businessName != '') {
             document.getElementById('alertInput').style.display = `none`
             businesses.names.map(function (business) {
-                if (namecheck == business.toLowerCase()) {
-                    const url = namecheck.split(' ').join('-')
+                if (url == business.toLowerCase()) {
+                    // const url = namecheck.split(' ').join('-')
                     console.log(businessName)
-                    navigate(`/${url}`,{state:{name:`${business}`}})
+                    sessionStorage.setItem('name', business)
+                    navigate(`/${url}`)
                     window.location.reload()
                 } else {
                     document.getElementById('alertInput').innerText = 'Invalid business name.\nPlease try again.'

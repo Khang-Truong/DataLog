@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import "./scss/App.scss";
 import Home from "./pages/home";
-import NotSupported from "./pages/not-supported";
+import NotSupported from "./components/warning/not-supported";
 import Navbar from './components/navbar';
 
 export default function AppMobile() {

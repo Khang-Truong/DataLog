@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react"
-import authService from "../../services/auth.service"
+import authService from "../services/auth.service"
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import particlesConfig from '../backgrounds/config/configParticles';
+import particlesConfig from '../components/backgrounds/config/configParticles';
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
-import Navbar from "../navbar";
+import Navbar from "../components/navbar";
 
 export default function NewUser() {
     const navigate = useNavigate();

@@ -19,8 +19,10 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000"
-]
+    "http://localhost:3000",
+    'http://127.0.0.1:8080',
+    "http://localhost:8080"
+    ]
 
 # what is a middleware?
 # software that acts as a bridge between an operating system or database and applications, especially on a network.

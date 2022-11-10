@@ -8,7 +8,7 @@ class AuthService {
         return axios.get(API_URL + '/get-dbs')
     }
 
-    getCurrentUser() {
+    async getCurrentUser() {
         const token = localStorage.getItem('token');
         const tokenObj = JSON.parse(token)
 

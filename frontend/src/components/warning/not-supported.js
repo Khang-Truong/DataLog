@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import BinaryBackground from '../components/backgrounds/binarybackground';
-import "../scss/App.scss";
+import BinaryBackground from '../backgrounds/binarybackground';
+import "../../scss/App.scss";
 
 export default function NotSupported() {
 

@@ -9,7 +9,7 @@ import Linechart from '../components/Charts/Linechart';
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function Dashboard() {
-	let { businessname } = useParams();
+	const params = useParams();
 
 	const [newUser, setNewUser] = useState(false)
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
@@ -36,59 +36,66 @@ export default function Dashboard() {
 	});
 
 	useEffect(() => {
-		if (!('user' in localStorage)) {
-			navigate('/')
-		} else {
-			setNewUser(user.newuser)
-			axios.get(API_URL + 'revenues').then((res) => {
-				setRevenueHistoryLabel(res.data.map((element) => element.ymd));
-				setRevenueHistoryData(res.data.map((element) => element.dailyRevenue));
-			});
-			axios.get(API_URL + 'revenue_forecast').then((res) => {
-				setRevenueForecast({
-					...revenueForecast,
-					labels: res.data.map((element) => element.Date),
-					datasets: [
-						{
-							label: 'Revenue Forecast',
-							data: res.data.map((element) => element.PredictedRevenue),
-							backgroundColor: 'rgba(54, 162, 235,0.8)',
-							borderColor: 'black',
-							borderWidth: 1,
-						},
-					],
+		if(params.businessname != user.db.toLowerCase()){
+			sessionStorage.setItem('url', params.businessname)
+			navigate('/badpage')
+		} else{
+			if ('user' in localStorage && (params.businessname == user.db.toLowerCase())) {
+				sessionStorage.clear()
+				setNewUser(user.newuser)
+				axios.get(API_URL + 'revenues').then((res) => {
+					setRevenueHistoryLabel(res.data.map((element) => element.ymd));
+					setRevenueHistoryData(res.data.map((element) => element.dailyRevenue));
 				});
-			});
-			axios.get(API_URL + 'quantity_forecast').then((res) => {
-				setQuantityForecast({
-					...quantityForecast,
-					labels: res.data.map((element) => element.Date),
-					datasets: [
-						{
-							label: 'Dairy',
-							data: res.data.map((element) => element.predicted_quantity),
-							backgroundColor: '#DAA520',
-							borderColor: '#FFD700',
-						},
-					],
+				axios.get(API_URL + 'revenue_forecast').then((res) => {
+					setRevenueForecast({
+						...revenueForecast,
+						labels: res.data.map((element) => element.Date),
+						datasets: [
+							{
+								label: 'Revenue Forecast',
+								data: res.data.map((element) => element.PredictedRevenue),
+								backgroundColor: 'rgba(54, 162, 235,0.8)',
+								borderColor: 'black',
+								borderWidth: 1,
+							},
+						],
+					});
 				});
-			});
-			axios.get(API_URL + 'forecasted_weather').then((res) => {
-				setWeatherForecast({
-					...weatherForecast,
-					labels: res.data.map((element) => element.dt_txt),
-					datasets: [
-						{
-							data: res.data.map((element) => element.temp),
-							backgroundColor: '#FA8072',
-							borderColor: '#800000',
-							tension: 0.4,
-						},
-					],
+				axios.get(API_URL + 'quantity_forecast').then((res) => {
+					setQuantityForecast({
+						...quantityForecast,
+						labels: res.data.map((element) => element.Date),
+						datasets: [
+							{
+								label: 'Dairy',
+								data: res.data.map((element) => element.predicted_quantity),
+								backgroundColor: '#DAA520',
+								borderColor: '#FFD700',
+							},
+						],
+					});
 				});
-			});
+				axios.get(API_URL + 'forecasted_weather').then((res) => {
+					setWeatherForecast({
+						...weatherForecast,
+						labels: res.data.map((element) => element.dt_txt),
+						datasets: [
+							{
+								data: res.data.map((element) => element.temp),
+								backgroundColor: '#FA8072',
+								borderColor: '#800000',
+								tension: 0.4,
+							},
+						],
+					});
+				});
+			} else {
+				navigate('/')
+				window.location.reload()
+			}
 		}
-		
+
 	}, []);
 
 	Chart.register(zoomPlugin);

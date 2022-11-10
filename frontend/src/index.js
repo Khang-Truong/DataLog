@@ -8,7 +8,7 @@ import {
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-if ((navigator.userAgent.match(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i))) {
+if ((navigator.userAgent.match(/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i))) {
   root.render(
     <Router>
       <AppMobile />

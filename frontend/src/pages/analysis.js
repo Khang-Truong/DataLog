@@ -5,8 +5,11 @@ import GaugeChart from '../components/Charts/Gaugechart';
 import Barchart from '../components/Charts/Barchart';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function Analysis() {
+	let { businessname } = useParams();
+
 	const API_URL = 'http://localhost:8000/api/';
 	const [wastage, setWastage] = useState({
 		labels: '',
