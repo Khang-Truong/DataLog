@@ -1,74 +1,102 @@
-aiohttp @ file:///Users/runner/miniforge3/conda-bld/aiohttp_1666878633563/work
-aiosignal @ file:///home/conda/feedstock_root/build_artifacts/aiosignal_1636093929600/work
-anyio @ file:///home/conda/feedstock_root/build_artifacts/anyio_1666191106763/work/dist
-async-timeout @ file:///home/conda/feedstock_root/build_artifacts/async-timeout_1640026696943/work
-attrs @ file:///home/conda/feedstock_root/build_artifacts/attrs_1659291887007/work
-autopep8 @ file:///opt/conda/conda-bld/autopep8_1650463822033/work
-bcrypt==4.0.1
-certifi @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_4d2o0arbv6/croot/certifi_1665076671099/work/certifi
-cffi @ file:///Users/runner/miniforge3/conda-bld/cffi_1666754795865/work
-charset-normalizer @ file:///home/conda/feedstock_root/build_artifacts/charset-normalizer_1661170624537/work
-click @ file:///home/conda/feedstock_root/build_artifacts/click_1666798198223/work
-cmdstanpy==1.0.8
-contourpy==1.0.6
-convertdate==2.4.0
-cryptography @ file:///Users/runner/miniforge3/conda-bld/cryptography_1667424067321/work
-cycler==0.11.0
-Cython==0.29.32
-distlib==0.3.6
-dnspython @ file:///home/conda/feedstock_root/build_artifacts/dnspython_1646621171513/work
-ecdsa==0.18.0
-ephem==4.1.3
-fastapi @ file:///home/conda/feedstock_root/build_artifacts/fastapi_1667304014501/work
-filelock==3.8.0
-fonttools==4.38.0
-frozenlist @ file:///Users/runner/miniforge3/conda-bld/frozenlist_1666783592180/work
-h11 @ file:///home/conda/feedstock_root/build_artifacts/h11_1664132893548/work
-hijri-converter==2.2.4
-holidays==0.16
-idna @ file:///home/conda/feedstock_root/build_artifacts/idna_1663625384323/work
-joblib==1.2.0
-kiwisolver==1.4.4
-korean-lunar-calendar==0.3.1
-LunarCalendar==0.0.9
-matplotlib==3.6.2
-motor @ file:///home/conda/feedstock_root/build_artifacts/motor_1666737622493/work
-multidict @ file:///Users/runner/miniforge3/conda-bld/multidict_1666830114256/work
-numpy==1.23.4
-packaging==21.3
-pandas==1.5.1
-passlib==1.7.4
-Pillow==9.3.0
-pipenv==2022.10.25
-platformdirs==2.5.2
-prophet==1.1.1
-pyasn1==0.4.8
-pycodestyle @ file:///tmp/build/80754af9/pycodestyle_1636635402688/work
-pycparser @ file:///home/conda/feedstock_root/build_artifacts/pycparser_1636257122734/work
-pydantic @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_0177abda-492e-47e4-848e-30764225e24e5vrgbltd/croots/recipe/pydantic_1651218727258/work
-PyMeeus==0.5.11
-pymongo @ file:///Users/runner/miniforge3/conda-bld/pymongo_1666861448146/work
-pyparsing==3.0.9
-pystan==2.19.1.1
-python-dateutil==2.8.2
-python-jose==3.3.0
-python-multipart==0.0.5
-pytz==2022.6
-requests==2.28.1
-rsa==4.9
-scikit-learn==1.1.3
-scipy==1.9.3
-setuptools-git==1.2
-six==1.16.0
-sniffio @ file:///home/conda/feedstock_root/build_artifacts/sniffio_1662051266223/work
-starlette @ file:///home/conda/feedstock_root/build_artifacts/starlette-recipe_1666366324851/work
-threadpoolctl==3.1.0
-toml @ file:///tmp/build/80754af9/toml_1616166611790/work
-tornado @ file:///Users/runner/miniforge3/conda-bld/tornado_1666788903714/work
-tqdm==4.64.1
-typing_extensions @ file:///home/conda/feedstock_root/build_artifacts/typing_extensions_1665144421445/work
-urllib3==1.26.12
-uvicorn @ file:///Users/runner/miniforge3/conda-bld/uvicorn-split_1666218775957/work
-virtualenv==20.16.6
-virtualenv-clone==0.5.7
-yarl @ file:///Users/runner/miniforge3/conda-bld/yarl_1666861993834/work
+# This file may be used to create an environment using:
+# $ conda create --name <env> --file <this file>
+# platform: osx-arm64
+aiohttp=3.8.3=py38hb991d35_1
+aiosignal=1.2.0=pyhd8ed1ab_0
+anyio=3.6.2=pyhd8ed1ab_0
+async-timeout=4.0.2=pyhd8ed1ab_0
+attrs=22.1.0=pyh71513ae_1
+autopep8=1.6.0=pyhd3eb1b0_1
+bcrypt=4.0.1=pypi_0
+bzip2=1.0.8=h3422bc3_4
+ca-certificates=2022.10.11=hca03da5_0
+certifi=2022.9.24=py38hca03da5_0
+cffi=1.15.1=py38ha45ccd6_2
+charset-normalizer=2.1.1=pyhd8ed1ab_0
+click=8.1.3=unix_pyhd8ed1ab_2
+cmdstanpy=1.0.8=pypi_0
+contourpy=1.0.6=pypi_0
+convertdate=2.4.0=pypi_0
+cryptography=38.0.3=py38h23f6d3d_0
+cycler=0.11.0=pypi_0
+cython=0.29.32=pypi_0
+distlib=0.3.6=pypi_0
+dnspython=2.2.1=pyhd8ed1ab_0
+ecdsa=0.18.0=pypi_0
+ephem=4.1.3=pypi_0
+fastapi=0.85.2=pyhd8ed1ab_0
+filelock=3.8.0=pypi_0
+fonttools=4.38.0=pypi_0
+frozenlist=1.3.1=py38hb991d35_1
+h11=0.14.0=pyhd8ed1ab_0
+hijri-converter=2.2.4=pypi_0
+holidays=0.16=pypi_0
+idna=3.4=pyhd8ed1ab_0
+joblib=1.2.0=pypi_0
+kiwisolver=1.4.4=pypi_0
+korean-lunar-calendar=0.3.1=pypi_0
+libblas=3.9.0=15_osxarm64_openblas
+libcblas=3.9.0=15_osxarm64_openblas
+libcxx=14.0.6=h848a8c0_0
+libffi=3.4.2=hc377ac9_4
+libgfortran=5.0.0=11_2_0_he6877d6_26
+libgfortran5=11.2.0=he6877d6_26
+liblapack=3.9.0=15_osxarm64_openblas
+libopenblas=0.3.20=hea475bc_0
+libzlib=1.2.13=h03a7124_4
+llvm-openmp=12.0.0=haf9daa7_1
+lunarcalendar=0.0.9=pypi_0
+matplotlib=3.6.2=pypi_0
+motor=3.1.1=pyhd8ed1ab_0
+multidict=6.0.2=py38hb991d35_2
+ncurses=6.3=h1a28f6b_3
+numpy=1.23.4=pypi_0
+openssl=3.0.7=h03a7124_0
+packaging=21.3=pypi_0
+pandas=1.5.1=pypi_0
+passlib=1.7.4=pypi_0
+pillow=9.3.0=pypi_0
+pip=22.2.2=py38hca03da5_0
+pipenv=2022.10.25=pypi_0
+platformdirs=2.5.2=pypi_0
+prophet=1.1.1=pypi_0
+pyasn1=0.4.8=pypi_0
+pycodestyle=2.8.0=pyhd3eb1b0_0
+pycparser=2.21=pyhd8ed1ab_0
+pydantic=1.9.0=py38h1a28f6b_1
+pymeeus=0.5.11=pypi_0
+pymongo=4.3.2=py38h2b1e499_1
+pyparsing=3.0.9=pypi_0
+pystan=2.19.1.1=pypi_0
+python=3.8.13=hd3575e6_0_cpython
+python-dateutil=2.8.2=pypi_0
+python-jose=3.3.0=pypi_0
+python-multipart=0.0.5=pypi_0
+python_abi=3.8=2_cp38
+pytz=2022.6=pypi_0
+readline=8.2=h1a28f6b_0
+requests=2.28.1=pypi_0
+rsa=4.9=pypi_0
+scikit-learn=1.1.3=pypi_0
+scipy=1.9.3=pypi_0
+setuptools=65.5.0=py38hca03da5_0
+setuptools-git=1.2=pypi_0
+six=1.16.0=pypi_0
+sniffio=1.3.0=pyhd8ed1ab_0
+sqlite=3.39.3=h1058600_0
+starlette=0.20.4=pyhd8ed1ab_1
+threadpoolctl=3.1.0=pypi_0
+tk=8.6.12=hb8d0fd4_0
+toml=0.10.2=pyhd3eb1b0_0
+tornado=6.2=py38hb991d35_1
+tqdm=4.64.1=pypi_0
+typing-extensions=4.4.0=hd8ed1ab_0
+typing_extensions=4.4.0=pyha770c72_0
+urllib3=1.26.12=pypi_0
+uvicorn=0.19.0=py38h10201cd_0
+virtualenv=20.16.6=pypi_0
+virtualenv-clone=0.5.7=pypi_0
+wheel=0.37.1=pyhd3eb1b0_0
+xz=5.2.6=h1a28f6b_0
+yarl=1.8.1=py38hb991d35_0
+zlib=1.2.13=h03a7124_4
